@@ -1,0 +1,74 @@
+﻿@model BussinessSite.businesses
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>businesses</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.businessName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.businessName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.passward)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.passward)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kindOfPermission)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kindOfPermission)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Adress_city)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adress_city)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Adress_street)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adress_street)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Adress_numOfStreet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adress_numOfStreet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.managerid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.managerid)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.businessId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
