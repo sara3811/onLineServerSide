@@ -9,6 +9,22 @@ namespace DAL
 {
     public class TurnDal
     {
+        //todo: to take only isActive
+        public static List<customersInLine> GetAllCustomersInTurn()
+        {
+            try
+            {
+                using (onLineEntities1 entities = new onLineEntities1())
+                {
+
+                    return entities.customersInLines.Where(t=>t.preAlert>0).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public static List<customersInLine> GetLinePerActivityTime(int activityTimeId)
         {
             try
@@ -16,7 +32,7 @@ namespace DAL
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
                     var q = entities.customersInLines.Include("activityTime").ToList();
-                    return q.Where(a => a.activityTimeId == activityTimeId &&( a.ActualHour == new TimeSpan()||a.ActualHour==null)).OrderBy(l => l.estimatedHour).ToList();
+                    return q.Where(a => a.activityTimeId == activityTimeId && (a.ActualHour == new TimeSpan() || a.ActualHour == null)).OrderBy(l => l.estimatedHour).ToList();
                 }
             }
             catch (Exception)
@@ -29,12 +45,12 @@ namespace DAL
         {
             try
             {
-                using(onLineEntities1 entities = new onLineEntities1())
+                using (onLineEntities1 entities = new onLineEntities1())
                 {
                     return entities.customersInLines.Where(a => a.custId == custId && a.ActualHour == new TimeSpan()).ToList();
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
@@ -82,7 +98,7 @@ namespace DAL
                     for (int i = 0; i < line.Count(); i++)
                     {
                         customersInLine turn = entities1.customersInLines.FirstOrDefault(l => l.TurnId == line[i].TurnId);
-                        turn.estimatedHour = line[i].estimatedHour;     
+                        turn.estimatedHour = line[i].estimatedHour;
                     }
                     entities1.SaveChanges();
                 }
@@ -100,14 +116,14 @@ namespace DAL
             {
                 using (onLineEntities1 entities1 = new onLineEntities1())
                 {
-                    
+
                     customersInLine turn = entities1.customersInLines.FirstOrDefault(l => l.TurnId == turnToUpdate.TurnId);
                     turn.preAlert = turnToUpdate.preAlert;
                     turn.statusTurn = turnToUpdate.statusTurn;
                     turn.verificationCode = turnToUpdate.verificationCode;
                     turn.ActualHour = turnToUpdate.ActualHour;
 
-                   // entities1.Entry(turnToUpdate).State = EntityState.Modified;
+                    // entities1.Entry(turnToUpdate).State = EntityState.Modified;
                     entities1.SaveChanges();
                 }
             }
@@ -121,19 +137,19 @@ namespace DAL
         {
             try
             {
-                using(onLineEntities1 entities1 = new onLineEntities1())
+                using (onLineEntities1 entities1 = new onLineEntities1())
                 {
                     entities1.customersInLines.Remove(entities1.customersInLines.FirstOrDefault(t => t.TurnId == turnId));
                     entities1.SaveChanges();
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
 
                 throw;
             }
         }
 
-    
+
     }
 }

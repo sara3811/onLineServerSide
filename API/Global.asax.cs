@@ -12,21 +12,13 @@ namespace API
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            BL.services.NnotificationTimer.StartTimer();
         }
-        /*
+        
         protected void Application_BeginRequest()
         {
             Response.AddHeader("Access-Control-Allow-Origin", "*");
-            Response.AddHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE");
-            Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Pragma, Cache-Control, Authorization ");
 
-            if (Request.Headers.AllKeys.Contains("Origin", StringComparer.CurrentCultureIgnoreCase)
-                && Request.HttpMethod == "OPTIONS")
-            {
-                Response.End();
-            }
-
-
-        }*/
+        }
     }
 }

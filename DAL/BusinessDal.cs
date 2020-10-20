@@ -56,13 +56,14 @@ namespace DAL
                 throw;
             }
         }
-        public static void AddBusiness(business business)
+        public static int AddBusiness(business business)
         {
             using (onLineEntities1 entities1 = new onLineEntities1())
             {
                 entities1.businesses.Add(business);
                 entities1.SaveChanges();
                 int id = business.businessId;
+                return id;
             }
         }
     }

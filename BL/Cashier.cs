@@ -9,8 +9,8 @@ namespace BL
 {
 
     //todo: לשנות את שם המחלקה ולהחליט איפה יהיו הפונקציות
- public   class Cashier
-    
+    public class Cashier
+
     {
         public static TurnDetailsDTO GetNearestTurn(int serviceId)
         {
@@ -19,7 +19,8 @@ namespace BL
                 ActivityTimeDTO activityTime = ActivityTimeBL.GetActivityTime(DateTime.Now, serviceId);
                 List<customersInLine> line = new List<customersInLine>();
                 if (activityTime != null)
-                { line = TurnDal.GetLinePerActivityTime(activityTime.ActivityTimeId);
+                {
+                    line = TurnDal.GetLinePerActivityTime(activityTime.ActivityTimeId);
                     if (line.Count() == 0)
                         throw new Exception("there is no turns now");
                 }
@@ -32,13 +33,13 @@ namespace BL
             catch (Exception ex)
             {
 
-                throw ex ;
+                throw ex;
             }
         }
 
         public static void CompleteTurn(TurnDetailsDTO turn)
         {
-           
+
             try
             {
                 customersInLine acceptedTurn = TurnDal.GetTurnByTurnId(turn.TurnId);
@@ -50,6 +51,12 @@ namespace BL
 
                 throw;
             }
+        }
+        public static void CompleteActivityTime(int activityTimeId)
+        {
+            //call to calcAvg x2
+            var line = TurnDal.GetLinePerActivityTime(activityTimeId);
+            //todo: send to update every turn to be not active
         }
     }
 }

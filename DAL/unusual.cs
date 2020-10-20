@@ -15,11 +15,13 @@ namespace DAL
     public partial class unusual
     {
         public int unusualId { get; set; }
-        public int average { get; set; }
+        public double average { get; set; }
         public int activityTimeId { get; set; }
         public Nullable<System.DateTime> startTime { get; set; }
         public Nullable<System.DateTime> endTime { get; set; }
         public Nullable<double> StandardDeviation { get; set; }
+        public Nullable<bool> kindOfUnusual { get; set; }
+        public Nullable<bool> isActive { get; set; }
     
         public virtual activityTime activityTime { get; set; }
     }

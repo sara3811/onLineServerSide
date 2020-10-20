@@ -33,6 +33,7 @@ namespace DAL
         public Nullable<double> ActualDurationOfService { get; set; }
         public Nullable<double> StandardDeviation { get; set; }
         public Nullable<double> averageNumOfWaitingPeople { get; set; }
+        public Nullable<int> avgServiceDuration { get; set; }
     
         public virtual service service { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

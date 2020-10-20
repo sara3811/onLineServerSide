@@ -23,6 +23,7 @@ namespace DAL
         public int custId { get; set; }
         public string phoneNumber { get; set; }
         public string custName { get; set; }
+        public string notficationToken { get; set; }
         public Nullable<double> latitude { get; set; }
         public Nullable<double> longitude { get; set; }
     

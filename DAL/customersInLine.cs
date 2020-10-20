@@ -31,6 +31,8 @@ namespace DAL
         public int statusTurn { get; set; }
         public string verificationCode { get; set; }
         public Nullable<int> numOfPushTimes { get; set; }
+        public Nullable<System.TimeSpan> exitHour { get; set; }
+        public string isActive { get; set; }
     
         public virtual activityTime activityTime { get; set; }
         public virtual customer customer { get; set; }

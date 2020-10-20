@@ -1,4 +1,5 @@
 ﻿using BL;
+using DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,18 @@ namespace API.Controllers
     [EnableCors("*", "*", "*")]
     public class BusinessesController : ApiController
     {
-     
+        public IHttpActionResult AddBusiness([FromBody]BusinessDTO businessToAdd)
+        {
+            try
+            {
+                return Ok(BusinessBL.AddBusiness(businessToAdd));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         public IHttpActionResult GetBusinesses()
         {
             try
