@@ -31,7 +31,7 @@ namespace BL
         {
             int businessId = BusinessDal.AddBusiness(converters.BusinessConverters.GetBusiness(businessToAdd));
             return businessId;
-            //todo: האם להחזיר למשתמש מידע  זה
+            //todo?: האם להחזיר למשתמש מידע  זה
         }
 
     }

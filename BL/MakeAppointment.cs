@@ -11,7 +11,7 @@ namespace BL
     public class MakeAppointment
     {
 
-        //todo: וכל מה שנגזר מהשינוי
+        //todo?: וכל מה שנגזר מהשינוי
 
         public static string BookAppointment(TurnDetailsDTO appointment)
         {
@@ -27,7 +27,8 @@ namespace BL
                     estimatedHour = appointment.EstimatedHour,
                     preAlert = appointment.PreAlert,
                     statusTurn = (int)eStatus.ADVANCE,
-                    enterHour = ConfigureHour(appointment.EstimatedHour, activityTime)
+                    enterHour = ConfigureHour(appointment.EstimatedHour, activityTime),
+                     isActive=true
                 };
                 turn.TurnId = TurnDal.AddAppointment(turn);
                 string verificationCode = TurnBL.CreateVerificationCode(turn);
@@ -108,10 +109,10 @@ namespace BL
             if (activityTime.AverageNumOfWaitingPeople == null)
                 return date.TimeOfDay;
             TimeSpan logicHour = new TimeSpan();
-            //todo: לקבוע את המשתנה בהתאם לאמינות-לסטית תקן
+            //todoever: לקבוע את המשתנה בהתאם לאמינות-לסטית תקן
             int numOfIgnoreServiceDuration = 3;
             //
-            //todo:לשנות את השם בדטהביס activityTime.AverageNumOfWaitingPeople
+            //todo?:לשנות את השם בדטהביס activityTime.AverageNumOfWaitingPeople
 
             int numOfSub = (int)(activityTime.AverageNumOfWaitingPeople.Value / activityTime.ActualDurationOfService - numOfIgnoreServiceDuration);
 

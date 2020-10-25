@@ -17,8 +17,10 @@ namespace API
         
         protected void Application_BeginRequest()
         {
-            Response.AddHeader("Access-Control-Allow-Origin", "*");
+           // Response.AddHeader("Access-Control-Allow-Origin", "*");
 
         }
+        
+
     }
 }

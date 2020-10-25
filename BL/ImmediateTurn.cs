@@ -159,18 +159,18 @@ namespace BL
                 int status = (int)eStatus.TEMPORARY;
                 if (pushFlag)
                     status = (int)eStatus.TEMPORARY_WITH_PUSH;
-                CustomerInLineDTO temporaryTurn = new CustomerInLineDTO()
+               customersInLine temporaryTurn = new customersInLine()
                 {
-                    ActivityTimeId = activityTime.ActivityTimeId,
-                    CustId = custId,
-                    EnterHour = TimeSpan.FromMinutes(turn.Duration).Add(DateTime.Now.TimeOfDay),
-                    EstimatedHour = DateTime.Today.Add(turn.EstimatedHour.Value),
-
-                    PreAlert = 0,
-                    StatusTurn = status
+                    activityTimeId = activityTime.ActivityTimeId,
+                    custId = custId,
+                    enterHour = TimeSpan.FromMinutes(turn.Duration).Add(DateTime.Now.TimeOfDay),
+                    estimatedHour = DateTime.Today.Add(turn.EstimatedHour.Value),
+                    isActive=true,
+                    preAlert = 0,
+                    statusTurn = status
                 };
 
-                int turnId = TurnDal.AddAppointment(converters.CustomerInLineConvrters.GetCustomerInLine(temporaryTurn));
+                int turnId = TurnDal.AddAppointment(temporaryTurn);
                 return turnId;
             }
             catch (Exception)

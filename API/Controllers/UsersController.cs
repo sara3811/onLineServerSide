@@ -12,11 +12,11 @@ namespace API.Controllers
     [EnableCors("*", "*", "*")]
     public class UsersController : ApiController
     {
-        public IHttpActionResult GetToken(string name, string phone,string notifactionToken)
+        public IHttpActionResult GetToken(string name, string phone)//,string notifactionToken)
         {
             try
             {
-                Token.AddCustomer(name, phone,notifactionToken);
+                Token.AddCustomer(name, phone); //,notifactionToken);
                 return Ok(Token.GetToken(name, phone));
             }
             catch (Exception)

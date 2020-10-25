@@ -36,7 +36,10 @@ namespace BL
                 throw ex;
             }
         }
-
+/// <summary>
+/// occured whenever turn finished
+/// </summary>
+/// <param name="turn"></param>
         public static void CompleteTurn(TurnDetailsDTO turn)
         {
 
@@ -52,11 +55,18 @@ namespace BL
                 throw;
             }
         }
+        /// <summary>
+        /// occured when-ever activityTime is over
+        /// </summary>
+        /// <param name="activityTimeId"></param>
         public static void CompleteActivityTime(int activityTimeId)
         {
-            //call to calcAvg x2
+            BL.services.StatisticCalc.calcAvgServiceDuration(activityTimeId);
+            BL.services.StatisticCalc.calcAvgWaitingPeople();
             var line = TurnDal.GetLinePerActivityTime(activityTimeId);
-            //todo: send to update every turn to be not active
+            line.ForEach(t => t.isActive = false);
+            DAL.TurnDal.UpdateTurns(line);
+         
         }
     }
 }

@@ -10,7 +10,7 @@ namespace BL.services
 {
     class NotificationService 
     {
-        //todo: timer that cause to the func
+       
         //public static void SetOnNotifaction()
         //{
         //    var allTurns = DAL.TurnDal.GetAllCustomersInTurn();
@@ -36,7 +36,7 @@ namespace BL.services
                             body = body,
                             //כל שאר הערכים רשות
                             vibrate = "[300, 100, 400, 100, 400, 100, 400]",
-                            //todo: להחליף לאייקון הולם יותר
+                            //todoever: להחליף לאייקון הולם יותר
                             icon = "https://upload.wikimedia.org/wikipedia/en/thumb/3/34/AlthepalHappyface.svg/256px-AlthepalHappyface.svg.png",
                             tag = "push demo",
                             data = new { url = "https://maps.google.com" }

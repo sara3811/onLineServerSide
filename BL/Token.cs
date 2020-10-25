@@ -72,9 +72,9 @@ namespace BL
             }
         }
 
-        public static void AddCustomer(string name, string phone,string notifactionToken)
+        public static void AddCustomer(string name, string phone)//,string notifactionToken)
         {
-            customer customer = new customer() { custName = name, phoneNumber = phone, notficationToken=notifactionToken };
+            customer customer = new customer() { custName = name, phoneNumber = phone};//, notficationToken=notifactionToken 
             CustomerDal.AddCustomer(customer);
         }
     }

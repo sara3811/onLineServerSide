@@ -183,6 +183,7 @@
     <Compile Include="services\NnotificationTimer.cs" />
     <Compile Include="services\NotifactionService.cs" />
     <Compile Include="services\PushException.cs" />
+    <Compile Include="services\StatisticCalc.cs" />
     <Compile Include="services\TurnServices.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TurnBL.cs" />

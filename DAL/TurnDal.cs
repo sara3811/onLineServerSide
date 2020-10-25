@@ -9,7 +9,7 @@ namespace DAL
 {
     public class TurnDal
     {
-        //todo: to take only isActive
+      
         public static List<customersInLine> GetAllCustomersInTurn()
         {
             try
@@ -17,7 +17,7 @@ namespace DAL
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
 
-                    return entities.customersInLines.Where(t=>t.preAlert>0).ToList();
+                    return entities.customersInLines.Where(t=>t.isActive==true&&t.preAlert>0).ToList();
                 }
             }
             catch (Exception)
@@ -32,7 +32,7 @@ namespace DAL
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
                     var q = entities.customersInLines.Include("activityTime").ToList();
-                    return q.Where(a => a.activityTimeId == activityTimeId && (a.ActualHour == new TimeSpan() || a.ActualHour == null)).OrderBy(l => l.estimatedHour).ToList();
+                    return q.Where(a =>a.isActive==true&& a.activityTimeId == activityTimeId && (a.ActualHour == new TimeSpan() || a.ActualHour == null)).OrderBy(l => l.estimatedHour).ToList();
                 }
             }
             catch (Exception)
@@ -47,7 +47,7 @@ namespace DAL
             {
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
-                    return entities.customersInLines.Where(a => a.custId == custId && a.ActualHour == new TimeSpan()).ToList();
+                    return entities.customersInLines.Where(a => a.isActive == true && a.custId == custId && a.ActualHour == new TimeSpan()).ToList();
                 }
             }
             catch (Exception)
@@ -89,7 +89,7 @@ namespace DAL
             }
         }
 
-        public static void UpdateTimeForTurns(List<customersInLine> line)
+        public static void UpdateTurns(List<customersInLine> line)
         {
             try
             {
@@ -99,6 +99,7 @@ namespace DAL
                     {
                         customersInLine turn = entities1.customersInLines.FirstOrDefault(l => l.TurnId == line[i].TurnId);
                         turn.estimatedHour = line[i].estimatedHour;
+                        turn.isActive = line[i].isActive;
                     }
                     entities1.SaveChanges();
                 }
@@ -149,6 +150,8 @@ namespace DAL
                 throw;
             }
         }
+
+       
 
 
     }

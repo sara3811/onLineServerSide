@@ -11,7 +11,7 @@ namespace BL.services
     {
         public static void StartTimer()
         {
-            //todo timer
+            
             // Create a timer with a two second interval-ask if interval is appropriate.
             //Interval property is in milliseconds.
             // 1 sec = 1000 milliseconds

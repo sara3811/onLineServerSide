@@ -12,7 +12,7 @@ namespace API.Controllers
     [EnableCors("*", "*", "*")]
 
     public class CustomersInTurnController : ApiController
-    {//todo: איך אפשר לפנות לא רק בשם ID
+    {//toask: איך אפשר לפנות לא רק בשם ID
         public IHttpActionResult GetNearestTurn(int id)
         {
             try
