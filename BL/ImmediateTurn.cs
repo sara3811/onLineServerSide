@@ -93,7 +93,7 @@ namespace BL
                 index++;
                 hour = hour.Add(ts);
             }
-            //todo: לבדוק את הלולאות ותקינות ההחזרה
+            //todoever: לבדוק את הלולאות ותקינות ההחזרה
             return hour;
         }
 

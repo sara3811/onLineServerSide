@@ -63,7 +63,7 @@ namespace DAL
             {
                 using (onLineEntities1 entities1 = new onLineEntities1())
                 {
-                    return entities1.customersInLines.First(t => t.TurnId == turnId);
+                    return entities1.customersInLines.Include("activityTime").First(t => t.TurnId == turnId);
                 }
             }
             catch
@@ -123,6 +123,7 @@ namespace DAL
                     turn.statusTurn = turnToUpdate.statusTurn;
                     turn.verificationCode = turnToUpdate.verificationCode;
                     turn.ActualHour = turnToUpdate.ActualHour;
+                    turn.exitHour = turnToUpdate.exitHour;
 
                     // entities1.Entry(turnToUpdate).State = EntityState.Modified;
                     entities1.SaveChanges();

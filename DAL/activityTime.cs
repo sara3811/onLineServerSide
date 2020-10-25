@@ -14,6 +14,8 @@ namespace DAL
     
     public partial class activityTime
     {
+        public object sampleSize;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public activityTime()
         {

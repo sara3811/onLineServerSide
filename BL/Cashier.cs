@@ -8,7 +8,7 @@ using DAL;
 namespace BL
 {
 
-    //todo: לשנות את שם המחלקה ולהחליט איפה יהיו הפונקציות
+
     public class Cashier
 
     {
@@ -25,7 +25,7 @@ namespace BL
                         throw new Exception("there is no turns now");
                 }
 
-                //todo: לא גמור צריך לבדוק את המצב של כמה עובדים במשמרת
+                
                 else
                     throw new Exception("there is no activityTime now");
                 return converters.TurnDetailsConverters.GetTurnDetailsDTO(line[0]);
@@ -36,17 +36,43 @@ namespace BL
                 throw ex;
             }
         }
-/// <summary>
-/// occured whenever turn finished
-/// </summary>
-/// <param name="turn"></param>
+        /// <summary>
+        /// occured whenever turn accepted
+        /// </summary>
+        /// <param name="turn"></param>
+        public static TurnDetailsDTO AcceptTurn(TurnDetailsDTO turn)
+        {
+
+            try
+            {
+                customersInLine acceptedTurn = TurnDal.GetTurnByTurnId(turn.TurnId);
+                if (turn.ActualHour != new TimeSpan() && turn.ActualHour != null)
+                {
+                    acceptedTurn = converters.TurnDetailsConverters.GetCustomersInLine(GetNearestTurn(acceptedTurn.activityTime.serviceId));
+
+                }
+                acceptedTurn.ActualHour = DateTime.Now.TimeOfDay;
+                TurnDal.UpdateTurn(acceptedTurn);
+                return converters.TurnDetailsConverters.GetTurnDetailsDTO(acceptedTurn);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// occured whenever turn finished
+        /// </summary>
+        /// <param name="turn"></param>
         public static void CompleteTurn(TurnDetailsDTO turn)
         {
 
             try
             {
                 customersInLine acceptedTurn = TurnDal.GetTurnByTurnId(turn.TurnId);
-                acceptedTurn.ActualHour = DateTime.Now.TimeOfDay;
+                acceptedTurn.exitHour = DateTime.Now.TimeOfDay;
                 TurnDal.UpdateTurn(acceptedTurn);
             }
             catch (Exception)
@@ -62,11 +88,11 @@ namespace BL
         public static void CompleteActivityTime(int activityTimeId)
         {
             BL.services.StatisticCalc.calcAvgServiceDuration(activityTimeId);
-            BL.services.StatisticCalc.calcAvgWaitingPeople();
+            BL.services.StatisticCalc.calcAvgWaitingPeople(activityTimeId);
             var line = TurnDal.GetLinePerActivityTime(activityTimeId);
             line.ForEach(t => t.isActive = false);
             DAL.TurnDal.UpdateTurns(line);
-         
+
         }
     }
 }

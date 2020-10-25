@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class UnusualDal
+    public partial class UnusualDal
     {
         public static List<unusual> GetUnusuals(int serviceId)
         {

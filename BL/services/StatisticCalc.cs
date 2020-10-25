@@ -23,11 +23,15 @@ namespace BL.services
         /// <param name="turn"></param>
         /// <param name="actualDuration"></param>
         /// <returns>if this turn is unusual</returns>
-        private static bool IsSignificantDeviation(customersInLine turn, double actualDuration)
-        {//actualHour(1)=
-            double serviceMinutes = (turn.exitHour.Value - turn.ActualHour.Value).TotalMinutes;
+        private static bool IsSignificantDeviation(customersInLine turn, double actualDuration, bool IsServiceDuration)
+        {
+            double currentLen;
+            if (IsServiceDuration == true)
+                currentLen = (turn.exitHour.Value - turn.ActualHour.Value).TotalMinutes;
+            else
+                currentLen = turn.numOfPushTimes.Value;
 
-            if (serviceMinutes * 1.3 < actualDuration || serviceMinutes * 0.7 > actualDuration)
+            if (currentLen * 1.3 < actualDuration || currentLen * 0.7 > actualDuration)
                 return true;
             return false;
 
@@ -36,18 +40,17 @@ namespace BL.services
         /// find sequence of unusual turns
         /// </summary>
         /// <param name="activityTimeId"></param>
-  public static  void calcAvgServiceDuration(int activityTimeId)
+        public static void findUnusualSequences(int activityTimeId, double avg, bool IsServiceDuration)
         {
             var line = DAL.TurnDal.GetLinePerActivityTime(activityTimeId);
             List<int> significantDeviationIndexes = new List<int>();
+            DAL.activityTime activityTime = ActivityTimeDal.GetActivityTimeById(activityTimeId);
             int i = 0;
             bool isSignificantStatus = false;
-            DAL.activityTime activityTime = ActivityTimeDal.GetActivityTimeById(activityTimeId);
-            double serviceAvg = activityTime.ActualDurationOfService.Value;
             //שומרת ברשימה את האינדקסים של כל התחלה וסוף של תורים חריגים
             foreach (var item in line)
             {
-                bool isSignificant = IsSignificantDeviation(item, serviceAvg);
+                bool isSignificant = IsSignificantDeviation(item, avg, IsServiceDuration);
                 if (isSignificant && !isSignificantStatus)
                 {
                     significantDeviationIndexes.Add(i);
@@ -66,7 +69,7 @@ namespace BL.services
             int index = 0;
             // עוברת על מערך האינדקסים ובודקת האם הרצף משמעותי -אם כן ממשיכה ובודקת האם קים הפרש משמעותי בינו לבין הרצף הבא
             //אם כן ממשיכה לסכום- אם לא בודקת האם זהו רצף ארוך מספיק כדי להכניסו לטבלת חריגים
-            
+
             for (i = 1; i < significantDeviationIndexes.Count; i += 2)
             {
                 int length = significantDeviationIndexes[i] - significantDeviationIndexes[i - 1];
@@ -79,9 +82,9 @@ namespace BL.services
                 if (significantDeviationIndexes[i + 1] - significantDeviationIndexes[i] > minSequence)
                 {
                     if (sum >= minToDivide)
-                        SetUnUsualActivityTime(line.Skip(index).Take(significantDeviationIndexes[i]));
+                        SetUnusualActivityTime(line.Skip(index).Take(significantDeviationIndexes[i]).ToList());
                     else
-                        UpdateStatistics(line.Skip(index).Take(significantDeviationIndexes[i]), activityTime);
+                        UpdateStatistics(line.Skip(index).Take(significantDeviationIndexes[i]).ToList(), activityTime);
                     index = 0;
                     sum = 0;
 
@@ -95,74 +98,117 @@ namespace BL.services
         /// </summary>
         /// <param name="line">the turns that are not unuaual</param>
         /// <param name="activityTime"></param>
-        private static void UpdateStatistics(IEnumerable<customersInLine> line, activityTime activityTime)
+        private static void UpdateStatistics(List<customersInLine> line, activityTime activityTime, bool IsServiceDuration)
         {
+            //todoever: לעשות ביטוי למבדה במקום ה-if
             //שליפת ממוצע משמרת הכפלה ברוחב המדגם הוספת הנתונים החדשים, הוספת מספר הנתונים לרוחב המדגם וחלוקה של הסכום ברוחב המדגם
             //חישוב מחודש של סטיית טקן
-            
-            double activityTimeAvg = activityTime.ActualDurationOfService.Value;
-            double newAvg = line.Average(t => (t.exitHour.Value - t.ActualHour.Value).TotalMinutes);
-            double weightedAverage = (activityTimeAvg * activityTime.sampleSize.Value + newAvg * line.Count()) / (activityTime.sampleSize.Value + line.Count());
-            //todo: לחשב סטטית תקן משוקללת
-            double weightedStandardDeviation;
-            activityTime.ActualDurationOfService = weightedAverage;
-            activityTime.StandardDeviation = weightedStandardDeviation;
-
-     
-             DAL.ActivityTimeDal.updateActivityTime(activityTime);
-        }
-
-        private static void SetUnUsualActivityTime(IEnumerable<customersInLine> unusalLine)
-        {
-            //todo:endTime ו startTime ההכנסה פה לא נכונה- צריך לשנות את 
-
-            var unusalsLine = unusalLine.ToList();
-            DAL.unusual unusual = new unusual()
+            int totalSampleSize = activityTime.sampleSize.Value + line.Count();
+            double activityTimeAvg, newAvg, weightedAverage;
+            if (IsServiceDuration)
             {
-                activityTimeId = unusalLine.ToList()[0].activityTimeId,
-                average = unusalLine.Average(t => (t.exitHour.Value - t.ActualHour.Value).TotalMinutes),
-                isActive = true,
-                startTime = unusalsLine[0].estimatedHour,
-                endTime= unusalsLine[unusalLine.Count()-1].estimatedHour,
-                kindOfUnusual=true,
-            };
-            
-            scanUnusuals(unusual);
-            UnusualDal.AddUnUsual(unusual);
+                activityTimeAvg = activityTime.ActualDurationOfService.Value;
+                newAvg = line.Average(t => (t.exitHour.Value - t.ActualHour.Value).TotalMinutes);
+            }
+            else
+            {
+                activityTimeAvg = activityTime.averageNumOfWaitingPeople.Value;
+                newAvg = line.Average(t => t.numOfPushTimes.Value);
+            }
+            weightedAverage = (activityTimeAvg * activityTime.sampleSize.Value + newAvg * line.Count()) / totalSampleSize;
+            double newStandardDeviation = calcStandartDeviation(line, IsServiceDuration);
+            double weightedStandardDeviation = (activityTime.sampleSize.Value * Math.Sqrt(activityTime.StandardDeviation.Value) + line.Count() * Math.Sqrt(newStandardDeviation));
+            weightedStandardDeviation += Math.Sqrt(activityTime.sampleSize.Value * (activityTimeAvg - weightedAverage)) + Math.Sqrt(line.Count() * (newAvg - weightedAverage));
+            weightedStandardDeviation /= totalSampleSize;
+            activityTime.sampleSize = totalSampleSize;
+            if (IsServiceDuration)
+            {
+                activityTime.ActualDurationOfService = weightedAverage;
+                activityTime.serviceStandardDeviation = weightedStandardDeviation;
+            }
+            else
+            {
+                activityTime.averageNumOfWaitingPeople = weightedAverage;
+                activityTime.waitingStandardDeviation = weightedStandardDeviation;
+            }
+            ActivityTimeDal.updateActivityTime(activityTime);
         }
 
-        double calcStandartDeviation()
+        private static void SetUnusualActivityTime(List<customersInLine> unusalLine, bool IsServiceDuration)
         {
-            int[] values = new int[5];
-            //todo: init this array
+            DAL.unusual unusual;
+            int activityTimeId = unusalLine.ToList()[0].activityTimeId;
+            double standartDeviation= calcStandartDeviation(unusalLine,IsServiceDuration));
+          if (IsServiceDuration)
+            {
+                 unusual = new unusual(activityTimeId, unusalLine.Average(t => (t.exitHour.Value - t.ActualHour.Value).TotalMinutes),
+                 true,
+                 unusalLine[0].estimatedHour.Add(unusalLine[0].ActualHour.Value - unusalLine[0].estimatedHour.TimeOfDay),
+                 unusalLine[unusalLine.Count() - 1].exitHour.Value,
+                 standartDeviation);
+            }
+            else
+            {
+                unusual = new unusual(activityTimeId, unusalLine.Average(t => t.numOfPushTimes.Value),
+               false,
+               unusalLine[0].estimatedHour,
+               unusalLine[unusalLine.Count() - 1].exitHour.Value,
+               standartDeviation);
+
+            }
+                      UnusualDal.AddUnUsual(unusual);
+            scanUnusuals(unusual);
+
+        }
+     
+
+        static double calcStandartDeviation(List<customersInLine> line, bool IsServiceDuration)
+        {
+
+
             double ret = 0;
-            int count = values.Count();
+            int count = line.Count();
             if (count > 1)
             {
-                //Compute the Average
-                double avg = values.Average();
-
+                double sum,avg;
                 //Perform the Sum of (value-avg)^2
-                double sum = values.Sum(d => (d - avg) * (d - avg));
+                if (IsServiceDuration)
+                {
+                  avg= line.Average(t => (t.exitHour.Value - t.ActualHour.Value).TotalMinutes);
+                    sum = line.Sum(t => ((t.exitHour.Value - t.ActualHour.Value).TotalMinutes - avg) * ((t.exitHour.Value - t.ActualHour.Value).TotalMinutes - avg));
+                }
 
+                else
+
+                {
+                    avg= line.Average(t => t.numOfPushTimes.Value);
+                    sum = line.Sum(t => ((t.numOfPushTimes.Value - avg) * (t.numOfPushTimes.Value - avg))); }
                 //Put it all together
                 ret = Math.Sqrt(sum / count);
             }
             return ret;
         }
-
-
-    public static    void calcAvgWaitingPeople()
+        public static void calcAvgServiceDuration(int activityTimeId)
         {
-            //todo: להפוך את כל הפונקציות עזר לגנריות כדי שנוכל להשתמש בהם גם בסוג השני של חריגות
+            DAL.activityTime activityTime = ActivityTimeDal.GetActivityTimeById(activityTimeId);
+            double avg = activityTime.ActualDurationOfService.Value;
+            findUnusualSequences(activityTimeId, avg, true);
+        }
+
+        public static void calcAvgWaitingPeople(int activityTimeId)
+        {
             //ההבדל בין הזמן המשוער לזמן האמיתי
             //הנתון המענין כמה דחיפות היו בזמן הזה צריך לדעת ממוצע דחיפות
             //numOfPushTimes לפי
             //מאד דומה לפונקציה למעלה
             //todo: כשמאתחלים משמרת חדשה לאפס נתונים
+            DAL.activityTime activityTime = ActivityTimeDal.GetActivityTimeById(activityTimeId);
+            double avg = activityTime.averageNumOfWaitingPeople.Value;
+            findUnusualSequences(activityTimeId, avg, false);
+
         }
 
-     private static   void scanUnusuals(DAL.unusual unusual)
+        private static void scanUnusuals(DAL.unusual unusual)
         {
             //כרגע אין פה התיחסות לחריגות של משמרות מיוחדות
             var servicesUnusuals = DAL.UnusualDal.GetUnusuals(unusual.activityTime.serviceId).Where(u => u.kindOfUnusual == unusual.kindOfUnusual);

@@ -17,7 +17,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok( Cashier.GetNearestTurn(id));
+                return Ok(Cashier.GetNearestTurn(id));
             }
             catch (Exception ex)
             {
@@ -60,6 +60,8 @@ namespace API.Controllers
         {
             try
             {
+                if (turn.ActualHour == new TimeSpan())
+                    return Ok(Cashier.AcceptTurn(turn));
                 Cashier.CompleteTurn(turn);
                 return Ok(Cashier.GetNearestTurn(turn.ServiceId));
             }

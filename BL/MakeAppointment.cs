@@ -11,7 +11,6 @@ namespace BL
     public class MakeAppointment
     {
 
-        //todo?: וכל מה שנגזר מהשינוי
 
         public static string BookAppointment(TurnDetailsDTO appointment)
         {
@@ -112,7 +111,7 @@ namespace BL
             //todoever: לקבוע את המשתנה בהתאם לאמינות-לסטית תקן
             int numOfIgnoreServiceDuration = 3;
             //
-            //todo?:לשנות את השם בדטהביס activityTime.AverageNumOfWaitingPeople
+            //todoever:לשנות את השם בדטהביס  activityTime.AverageNumOfWaitingPeople כי זה שם ארוך
 
             int numOfSub = (int)(activityTime.AverageNumOfWaitingPeople.Value / activityTime.ActualDurationOfService - numOfIgnoreServiceDuration);
 
