@@ -14,8 +14,6 @@ namespace DAL
     
     public partial class activityTime
     {
-        public object sampleSize;
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public activityTime()
         {
@@ -31,11 +29,13 @@ namespace DAL
         public Nullable<System.DateTime> startDate { get; set; }
         public Nullable<System.DateTime> endDate { get; set; }
         public int numOfWorkers { get; set; }
-        public int estimatedDurationOfService { get; set; }
-        public Nullable<double> ActualDurationOfService { get; set; }
-        public Nullable<double> StandardDeviation { get; set; }
-        public Nullable<double> averageNumOfWaitingPeople { get; set; }
+        public int estimatedServiceDuration { get; set; }
+        public Nullable<double> actualServiceDuration { get; set; }
+        public Nullable<double> serviceStandardDeviation { get; set; }
+        public Nullable<double> waitingStandardDeviation { get; set; }
+        public Nullable<double> avgWaitings { get; set; }
         public Nullable<int> avgServiceDuration { get; set; }
+        public Nullable<int> sampleSize { get; set; }
     
         public virtual service service { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

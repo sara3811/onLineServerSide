@@ -13,7 +13,7 @@ namespace DAL
             using (onLineEntities1 entities1 = new onLineEntities1())
 
             {
-               return   entities1.customersInLines.Include(a => a.activityTime).Include(a => a.activityTime.service).Include("activityTime.service.business").Where(t => t.custId == custId &&( t.ActualHour == new TimeSpan()||t.ActualHour==null)).ToList();
+               return   entities1.customersInLines.Include(a => a.activityTime).Include(a => a.activityTime.service).Include("activityTime.service.business").Where(t => t.custId == custId &&( t.actualHour == new TimeSpan()||t.actualHour==null)).ToList();
                
             }
             //x => x.Quotes.Select(q => q.QuoteItems)

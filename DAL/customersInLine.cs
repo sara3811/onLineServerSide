@@ -26,13 +26,13 @@ namespace DAL
         public int activityTimeId { get; set; }
         public Nullable<System.TimeSpan> enterHour { get; set; }
         public System.DateTime estimatedHour { get; set; }
-        public Nullable<System.TimeSpan> ActualHour { get; set; }
+        public Nullable<System.TimeSpan> actualHour { get; set; }
+        public Nullable<System.TimeSpan> exitHour { get; set; }
         public int preAlert { get; set; }
         public int statusTurn { get; set; }
         public string verificationCode { get; set; }
         public Nullable<int> numOfPushTimes { get; set; }
-        public Nullable<System.TimeSpan> exitHour { get; set; }
-        public string isActive { get; set; }
+        public Nullable<bool> isActive { get; set; }
     
         public virtual activityTime activityTime { get; set; }
         public virtual customer customer { get; set; }

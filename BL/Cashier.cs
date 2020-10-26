@@ -51,7 +51,7 @@ namespace BL
                     acceptedTurn = converters.TurnDetailsConverters.GetCustomersInLine(GetNearestTurn(acceptedTurn.activityTime.serviceId));
 
                 }
-                acceptedTurn.ActualHour = DateTime.Now.TimeOfDay;
+                acceptedTurn.actualHour = DateTime.Now.TimeOfDay;
                 TurnDal.UpdateTurn(acceptedTurn);
                 return converters.TurnDetailsConverters.GetTurnDetailsDTO(acceptedTurn);
             }

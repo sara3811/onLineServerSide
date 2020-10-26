@@ -32,7 +32,7 @@ namespace DAL
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
                     var q = entities.customersInLines.Include("activityTime").ToList();
-                    return q.Where(a =>a.isActive==true&& a.activityTimeId == activityTimeId && (a.ActualHour == new TimeSpan() || a.ActualHour == null)).OrderBy(l => l.estimatedHour).ToList();
+                    return q.Where(a =>a.isActive==true&& a.activityTimeId == activityTimeId && (a.actualHour == new TimeSpan() || a.actualHour == null)).OrderBy(l => l.estimatedHour).ToList();
                 }
             }
             catch (Exception)
@@ -47,7 +47,7 @@ namespace DAL
             {
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
-                    return entities.customersInLines.Where(a => a.isActive == true && a.custId == custId && a.ActualHour == new TimeSpan()).ToList();
+                    return entities.customersInLines.Where(a => a.isActive == true && a.custId == custId && a.actualHour == new TimeSpan()).ToList();
                 }
             }
             catch (Exception)
@@ -122,7 +122,7 @@ namespace DAL
                     turn.preAlert = turnToUpdate.preAlert;
                     turn.statusTurn = turnToUpdate.statusTurn;
                     turn.verificationCode = turnToUpdate.verificationCode;
-                    turn.ActualHour = turnToUpdate.ActualHour;
+                    turn.actualHour = turnToUpdate.actualHour;
                     turn.exitHour = turnToUpdate.exitHour;
 
                     // entities1.Entry(turnToUpdate).State = EntityState.Modified;

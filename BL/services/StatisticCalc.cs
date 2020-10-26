@@ -27,7 +27,7 @@ namespace BL.services
         {
             double currentLen;
             if (IsServiceDuration == true)
-                currentLen = (turn.exitHour.Value - turn.ActualHour.Value).TotalMinutes;
+                currentLen = (turn.exitHour.Value - turn.actualHour.Value).TotalMinutes;
             else
                 currentLen = turn.numOfPushTimes.Value;
 
@@ -107,29 +107,29 @@ namespace BL.services
             double activityTimeAvg, newAvg, weightedAverage;
             if (IsServiceDuration)
             {
-                activityTimeAvg = activityTime.ActualDurationOfService.Value;
-                newAvg = line.Average(t => (t.exitHour.Value - t.ActualHour.Value).TotalMinutes);
+                activityTimeAvg = activityTime.actualServiceDuration.Value;
+                newAvg = line.Average(t => (t.exitHour.Value - t.actualHour.Value).TotalMinutes);
             }
             else
             {
-                activityTimeAvg = activityTime.averageNumOfWaitingPeople.Value;
+                activityTimeAvg = activityTime.avgWaitings.Value;
                 newAvg = line.Average(t => t.numOfPushTimes.Value);
             }
             weightedAverage = (activityTimeAvg * activityTime.sampleSize.Value + newAvg * line.Count()) / totalSampleSize;
             double newStandardDeviation = calcStandartDeviation(line, IsServiceDuration);
-            double weightedStandardDeviation = (activityTime.sampleSize.Value * Math.Sqrt(activityTime.StandardDeviation.Value) + line.Count() * Math.Sqrt(newStandardDeviation));
+            double weightedStandardDeviation = (activityTime.sampleSize.Value * Math.Sqrt(activityTime.sStandardDeviation.Value) + line.Count() * Math.Sqrt(newStandardDeviation));
             weightedStandardDeviation += Math.Sqrt(activityTime.sampleSize.Value * (activityTimeAvg - weightedAverage)) + Math.Sqrt(line.Count() * (newAvg - weightedAverage));
             weightedStandardDeviation /= totalSampleSize;
             activityTime.sampleSize = totalSampleSize;
             if (IsServiceDuration)
             {
-                activityTime.ActualDurationOfService = weightedAverage;
+                activityTime.actualServiceDuration = weightedAverage;
                 activityTime.serviceStandardDeviation = weightedStandardDeviation;
             }
             else
             {
-                activityTime.averageNumOfWaitingPeople = weightedAverage;
-                activityTime.waitingStandardDeviation = weightedStandardDeviation;
+                activityTime.avgWaitings = weightedAverage;
+                activityTime. waitingStandardDeviation = weightedStandardDeviation;
             }
             ActivityTimeDal.updateActivityTime(activityTime);
         }
@@ -138,12 +138,12 @@ namespace BL.services
         {
             DAL.unusual unusual;
             int activityTimeId = unusalLine.ToList()[0].activityTimeId;
-            double standartDeviation= calcStandartDeviation(unusalLine,IsServiceDuration));
+            double standartDeviation= calcStandartDeviation(unusalLine,IsServiceDuration);
           if (IsServiceDuration)
             {
-                 unusual = new unusual(activityTimeId, unusalLine.Average(t => (t.exitHour.Value - t.ActualHour.Value).TotalMinutes),
+                 unusual = new unusual(activityTimeId, unusalLine.Average(t => (t.exitHour.Value - t.actualHour.Value).TotalMinutes),
                  true,
-                 unusalLine[0].estimatedHour.Add(unusalLine[0].ActualHour.Value - unusalLine[0].estimatedHour.TimeOfDay),
+                 unusalLine[0].estimatedHour.Add(unusalLine[0].actualHour.Value - unusalLine[0].estimatedHour.TimeOfDay),
                  unusalLine[unusalLine.Count() - 1].exitHour.Value,
                  standartDeviation);
             }
@@ -174,8 +174,8 @@ namespace BL.services
                 //Perform the Sum of (value-avg)^2
                 if (IsServiceDuration)
                 {
-                  avg= line.Average(t => (t.exitHour.Value - t.ActualHour.Value).TotalMinutes);
-                    sum = line.Sum(t => ((t.exitHour.Value - t.ActualHour.Value).TotalMinutes - avg) * ((t.exitHour.Value - t.ActualHour.Value).TotalMinutes - avg));
+                  avg= line.Average(t => (t.exitHour.Value - t.actualHour.Value).TotalMinutes);
+                    sum = line.Sum(t => ((t.exitHour.Value - t.actualHour.Value).TotalMinutes - avg) * ((t.exitHour.Value - t.actualHour.Value).TotalMinutes - avg));
                 }
 
                 else
@@ -191,7 +191,7 @@ namespace BL.services
         public static void calcAvgServiceDuration(int activityTimeId)
         {
             DAL.activityTime activityTime = ActivityTimeDal.GetActivityTimeById(activityTimeId);
-            double avg = activityTime.ActualDurationOfService.Value;
+            double avg = activityTime.actualServiceDuration.Value;
             findUnusualSequences(activityTimeId, avg, true);
         }
 
@@ -203,7 +203,7 @@ namespace BL.services
             //מאד דומה לפונקציה למעלה
             //todo: כשמאתחלים משמרת חדשה לאפס נתונים
             DAL.activityTime activityTime = ActivityTimeDal.GetActivityTimeById(activityTimeId);
-            double avg = activityTime.averageNumOfWaitingPeople.Value;
+            double avg = activityTime.avgWaitings.Value;
             findUnusualSequences(activityTimeId, avg, false);
 
         }
@@ -224,13 +224,13 @@ namespace BL.services
             if (weeklyUnusuals.Count() > 10)
             {
                 TimeSpan startTime = weeklyUnusuals.Max(u => u.startTime.Value.TimeOfDay);
-                TimeSpan endTime = weeklyUnusuals.Min(u => u.endTime.Value.TimeOfDay);
+                TimeSpan endTime = weeklyUnusuals.Min(u => u.endTime.Value);
 
                 for (int i = 0; i < weeklyUnusuals.Count(); i++)
                 {
 
                     if (weeklyUnusuals.ElementAt(i).startTime.Value.TimeOfDay > endTime ||
-                        weeklyUnusuals.ElementAt(i).endTime.Value.TimeOfDay < startTime)
+                        weeklyUnusuals.ElementAt(i).endTime.Value < startTime)
                         weeklyUnusuals.RemoveAt(i--);
 
                 }

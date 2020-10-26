@@ -17,8 +17,8 @@ namespace BL.converters
             business business = new DAL.business()
             {
                 businessName = BusinessDto.BusinessName ,
-                passward = BusinessDto.Password ,
-                Adress_street = BusinessDto.Address,
+                password = BusinessDto.Password ,
+                adress_street = BusinessDto.Address,
 
                 managerid = BusinessDto.ChainManagerId
             };
@@ -31,8 +31,8 @@ namespace BL.converters
             {
                 BusinessId = business.businessId ,
                 BusinessName = business.businessName ,
-                Password = business.passward ,
-                Address = business.Adress_street + " " + business.Adress_numOfStreet + " " + business.Adress_city ,
+                Password = business.password ,
+                Address = business.adress_street + " " + business.adress_numOfStreet + " " + business.adress_city ,
                 // ChainManagerId = (int) business.managerid ,
                Services = ServiceConverters.GetServicesDTO(business.services.ToList())
             };
@@ -62,7 +62,7 @@ namespace BL.converters
             TurnInBusinessDTO businessDTO = new TurnInBusinessDTO()
             {
                 BusinessName = business.businessName ,
-                Address = business.Adress_city + " " + business.Adress_street + " " + business.Adress_numOfStreet ,
+                Address = business.adress_city + " " + business.adress_street + " " + business.adress_numOfStreet ,
             };
             return businessDTO;
         }

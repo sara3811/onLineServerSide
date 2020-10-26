@@ -39,7 +39,7 @@ namespace DAL
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
                     var updateActivityTime = entities.activityTimes.FirstOrDefault(a => a.activityTimeId == activityTime.activityTimeId);
-                    updateActivityTime.ActualDurationOfService = activityTime.ActualDurationOfService.Value;
+                    updateActivityTime.actualServiceDuration = activityTime.actualServiceDuration.Value;
                     updateActivityTime.StandardDeviation = activityTime.StandardDeviation.Value;
                     updateActivityTime.sampleSize=updateActivityTime.sampleSize.Value;
                     entities.SaveChanges();

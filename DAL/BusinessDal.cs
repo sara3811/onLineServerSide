@@ -44,7 +44,7 @@ namespace DAL
             {
                 using (onLineEntities1 entities1 = new onLineEntities1())
                 {
-                    business business = entities1.businesses.Include("services").FirstOrDefault(b => b.passward == password);
+                    business business = entities1.businesses.Include("services").FirstOrDefault(b => b.password == password);
                     if (business == null)
                         throw new Exception("worng password");
                     return business; 

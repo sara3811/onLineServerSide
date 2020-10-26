@@ -14,7 +14,7 @@ namespace DAL
     
     public partial class ranx
     {
-        public int TurnId { get; set; }
+        public int turnId { get; set; }
         public System.TimeSpan startTime { get; set; }
         public System.TimeSpan endTime { get; set; }
     

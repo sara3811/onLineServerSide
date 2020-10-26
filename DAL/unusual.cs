@@ -18,8 +18,8 @@ namespace DAL
         public double average { get; set; }
         public int activityTimeId { get; set; }
         public Nullable<System.DateTime> startTime { get; set; }
-        public Nullable<System.DateTime> endTime { get; set; }
-        public Nullable<double> StandardDeviation { get; set; }
+        public Nullable<System.TimeSpan> endTime { get; set; }
+        public Nullable<double> standardDeviation { get; set; }
         public Nullable<bool> kindOfUnusual { get; set; }
         public Nullable<bool> isActive { get; set; }
     

@@ -81,7 +81,7 @@ namespace BL
             {
                 activityTime activityTime = activityTimes[activityTimeIndex];
                 List<customersInLine> line = TurnDal.GetLinePerActivityTime(activityTime.activityTimeId);
-                double durationOfService = activityTime.ActualDurationOfService.Value;
+                double durationOfService = activityTime.actualServiceDuration.Value;
                 TimeSpan ts = TimeSpan.FromMinutes(durationOfService);
                 for (TimeSpan hour = activityTime.startTime; hour < activityTime.endTime; hour = hour.Add(ts))
                 {
@@ -111,7 +111,6 @@ namespace BL
             //todoever: לקבוע את המשתנה בהתאם לאמינות-לסטית תקן
             int numOfIgnoreServiceDuration = 3;
             //
-            //todoever:לשנות את השם בדטהביס  activityTime.AverageNumOfWaitingPeople כי זה שם ארוך
 
             int numOfSub = (int)(activityTime.AverageNumOfWaitingPeople.Value / activityTime.ActualDurationOfService - numOfIgnoreServiceDuration);
 

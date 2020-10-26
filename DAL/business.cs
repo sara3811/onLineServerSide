@@ -22,10 +22,10 @@ namespace DAL
     
         public int businessId { get; set; }
         public string businessName { get; set; }
-        public string passward { get; set; }
-        public string Adress_city { get; set; }
-        public string Adress_street { get; set; }
-        public int Adress_numOfStreet { get; set; }
+        public string password { get; set; }
+        public string adress_city { get; set; }
+        public string adress_street { get; set; }
+        public int adress_numOfStreet { get; set; }
         public Nullable<int> managerid { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

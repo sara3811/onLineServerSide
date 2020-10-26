@@ -15,7 +15,7 @@ namespace DAL
     public partial class swap
     {
         public int swapId { get; set; }
-        public Nullable<int> TurnId { get; set; }
+        public Nullable<int> turnId { get; set; }
         public System.TimeSpan startTime { get; set; }
         public System.TimeSpan endTime { get; set; }
     

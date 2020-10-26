@@ -23,9 +23,9 @@ namespace DAL
         public int custId { get; set; }
         public string phoneNumber { get; set; }
         public string custName { get; set; }
-        public string notficationToken { get; set; }
         public Nullable<double> latitude { get; set; }
         public Nullable<double> longitude { get; set; }
+        public string firebaseToken { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<customersInLine> customersInLines { get; set; }
