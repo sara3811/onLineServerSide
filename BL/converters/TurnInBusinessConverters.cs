@@ -17,7 +17,7 @@ namespace BL.converters
             {
                 ServiceId = service.serviceId,
                 BusinessName = service.business.businessName,
-                Address = service.business.Adress_street + " " + service.business.Adress_numOfStreet + " " + service.business.Adress_city,
+                Address = service.business.adress_street + " " + service.business.adress_numOfStreet + " " + service.business.adress_city,
 
             };
             return business;
@@ -38,7 +38,7 @@ namespace BL.converters
             {
                 ServiceId = custTurn.activityTime.serviceId,
                 BusinessName = custTurn.activityTime.service.business.businessName,
-                Address = custTurn.activityTime.service.business.Adress_street + " " + custTurn.activityTime.service.business.Adress_numOfStreet + " " + custTurn.activityTime.service.business.Adress_city,
+                Address = custTurn.activityTime.service.business.adress_street + " " + custTurn.activityTime.service.business.adress_numOfStreet + " " + custTurn.activityTime.service.business.adress_city,
                 TurnId= custTurn.TurnId,
                 EstimatedHour= custTurn.estimatedHour.TimeOfDay,
 

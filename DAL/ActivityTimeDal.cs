@@ -40,7 +40,7 @@ namespace DAL
                 {
                     var updateActivityTime = entities.activityTimes.FirstOrDefault(a => a.activityTimeId == activityTime.activityTimeId);
                     updateActivityTime.actualServiceDuration = activityTime.actualServiceDuration.Value;
-                    updateActivityTime.StandardDeviation = activityTime.StandardDeviation.Value;
+                  //todo:  updateActivityTime.StandardDeviation = activityTime.StandardDeviation.Value;
                     updateActivityTime.sampleSize=updateActivityTime.sampleSize.Value;
                     entities.SaveChanges();
 

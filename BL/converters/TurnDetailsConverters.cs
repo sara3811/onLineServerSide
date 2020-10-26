@@ -18,7 +18,7 @@ namespace BL.converters
                 TurnId = turn.TurnId,
                 VeriverificationCode = turn.verificationCode,
                 ServiceId=turn.activityTime.serviceId,
-                ActualHour=turn.ActualHour.Value
+                ActualHour=turn.actualHour.Value
             };
             return turnDetails;
 
@@ -30,7 +30,7 @@ namespace BL.converters
             {
                 custId = turnDTO.CustId,
                 estimatedHour = turnDTO.EstimatedHour,
-                ActualHour = turnDTO.ActualHour,
+                actualHour = turnDTO.ActualHour,
                 TurnId = turnDTO.TurnId,
                 verificationCode = turnDTO.VeriverificationCode
             };

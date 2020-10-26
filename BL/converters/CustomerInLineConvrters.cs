@@ -62,7 +62,7 @@ namespace BL.converters
         {
             customersInLine customerInLine = new customersInLine()
             {
-                ActualHour =appointment.ActualHour,
+                actualHour =appointment.ActualHour,
                 activityTimeId=appointment.ActivityTimeId,
                 statusTurn = appointment.StatusTurn ,
                 custId = appointment.CustId ,

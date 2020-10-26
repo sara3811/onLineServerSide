@@ -80,14 +80,14 @@ namespace BL.services
                         index = significantDeviationIndexes[i - 1];
                 }
                 if (significantDeviationIndexes[i + 1] - significantDeviationIndexes[i] > minSequence)
-                {
+                {/*
                     if (sum >= minToDivide)
-                        SetUnusualActivityTime(line.Skip(index).Take(significantDeviationIndexes[i]).ToList());
+                        //todo: SetUnusualActivityTime(line.Skip(index).Take(significantDeviationIndexes[i]).ToList());
                     else
-                        UpdateStatistics(line.Skip(index).Take(significantDeviationIndexes[i]).ToList(), activityTime);
+                      //todo:  UpdateStatistics(line.Skip(index).Take(significantDeviationIndexes[i]).ToList(), activityTime);
                     index = 0;
                     sum = 0;
-
+                    */
                 }
             }
 
@@ -117,19 +117,20 @@ namespace BL.services
             }
             weightedAverage = (activityTimeAvg * activityTime.sampleSize.Value + newAvg * line.Count()) / totalSampleSize;
             double newStandardDeviation = calcStandartDeviation(line, IsServiceDuration);
-            double weightedStandardDeviation = (activityTime.sampleSize.Value * Math.Sqrt(activityTime.sStandardDeviation.Value) + line.Count() * Math.Sqrt(newStandardDeviation));
-            weightedStandardDeviation += Math.Sqrt(activityTime.sampleSize.Value * (activityTimeAvg - weightedAverage)) + Math.Sqrt(line.Count() * (newAvg - weightedAverage));
-            weightedStandardDeviation /= totalSampleSize;
+           //todo: double weightedStandardDeviation = (activityTime.sampleSize.Value * Math.Sqrt(activityTime.sStandardDeviation.Value) + line.Count() * Math.Sqrt(newStandardDeviation));
+          //  weightedStandardDeviation += Math.Sqrt(activityTime.sampleSize.Value * (activityTimeAvg - weightedAverage)) + Math.Sqrt(line.Count() * (newAvg - weightedAverage));
+           // weightedStandardDeviation /= totalSampleSize;
+           //todo: להוציא שורש מכל הסיפור הזה כי זה שונות משוקללת  ולא סטית תקן
             activityTime.sampleSize = totalSampleSize;
             if (IsServiceDuration)
             {
                 activityTime.actualServiceDuration = weightedAverage;
-                activityTime.serviceStandardDeviation = weightedStandardDeviation;
+              //  activityTime.serviceStandardDeviation = weightedStandardDeviation;
             }
             else
             {
                 activityTime.avgWaitings = weightedAverage;
-                activityTime. waitingStandardDeviation = weightedStandardDeviation;
+             //   activityTime. waitingStandardDeviation = weightedStandardDeviation;
             }
             ActivityTimeDal.updateActivityTime(activityTime);
         }

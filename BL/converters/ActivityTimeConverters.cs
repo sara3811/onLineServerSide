@@ -19,10 +19,11 @@ namespace BL.converters
                 startTime = activityTimeDTO.StartTime ,
                 endTime = activityTimeDTO.EndTime ,
                 numOfWorkers = activityTimeDTO.NumOfWorkers ,
-                estimatedDurationOfService = activityTimeDTO.EstimatedDurationOfService ,
-                ActualDurationOfService = activityTimeDTO.ActualDurationOfService,
-                StandardDeviation = activityTimeDTO.StandardDeviation ,
-                averageNumOfWaitingPeople = activityTimeDTO.AverageNumOfWaitingPeople ,
+                estimatedServiceDuration = activityTimeDTO.EstimatedDurationOfService ,
+                actualServiceDuration = activityTimeDTO.ActualDurationOfService,
+             //todo:   StandardDeviation = activityTimeDTO.StandardDeviation ,
+                //todo: change dto type
+                avgServiceDuration =(int) activityTimeDTO.AverageNumOfWaitingPeople ,
             };
             return activityTime;
         }
@@ -39,10 +40,10 @@ namespace BL.converters
                 StartDate =  activityTime.startDate ,
                 EndDate = activityTime.endDate ,
                 NumOfWorkers =  activityTime.numOfWorkers ,
-                EstimatedDurationOfService = activityTime.estimatedDurationOfService ,
-                ActualDurationOfService = activityTime.ActualDurationOfService ,
-                StandardDeviation = activityTime.StandardDeviation ,
-                AverageNumOfWaitingPeople = activityTime.averageNumOfWaitingPeople ,
+                EstimatedDurationOfService = activityTime.estimatedServiceDuration ,
+                ActualDurationOfService = activityTime.actualServiceDuration ,
+              //todo:  StandardDeviation = activityTime.StandardDeviation ,
+                AverageNumOfWaitingPeople = activityTime.avgWaitings ,
             };
             return activityTimeDTO;
         }

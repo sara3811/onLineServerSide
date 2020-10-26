@@ -15,7 +15,7 @@ namespace BL.services
             // Create a timer with a two second interval-ask if interval is appropriate.
             //Interval property is in milliseconds.
             // 1 sec = 1000 milliseconds
-            Timer timer = new Timer(60000);
+            Timer timer = new Timer(1000);
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;
