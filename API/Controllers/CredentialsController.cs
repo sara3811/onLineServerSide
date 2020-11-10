@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,7 +13,7 @@ namespace API.Controllers
 
     public class CredentialsController : ApiController
     {
-        public IHttpActionResult Post(/*[FromBody]UserDto usre*/)
+        public IHttpActionResult Post([FromBody]UserDTO user)
         {
             try
             {

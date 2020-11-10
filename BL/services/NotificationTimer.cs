@@ -7,15 +7,15 @@ using System.Timers;
 
 namespace BL.services
 {
-    public class NnotificationTimer
+    public class NotificationTimer
     {
         public static void StartTimer()
         {
-            
+
             // Create a timer with a two second interval-ask if interval is appropriate.
             //Interval property is in milliseconds.
             // 1 sec = 1000 milliseconds
-            Timer timer = new Timer(1000);
+            Timer timer = new Timer(5000);
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;
@@ -23,6 +23,7 @@ namespace BL.services
         private async static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             var allTurns = DAL.TurnDal.GetAllCustomersInTurn();
+
             foreach (var item in allTurns)
             {
                 if (item.estimatedHour.AddMinutes(-item.preAlert) == DateTime.Now)

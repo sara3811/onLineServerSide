@@ -130,7 +130,7 @@ namespace BL.services
             else
             {
                 activityTime.avgWaitings = weightedAverage;
-             //   activityTime. waitingStandardDeviation = weightedStandardDeviation;
+             //   activityTime.waitingStandardDeviation = weightedStandardDeviation;
             }
             ActivityTimeDal.updateActivityTime(activityTime);
         }

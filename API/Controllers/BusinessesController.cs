@@ -25,6 +25,12 @@ namespace API.Controllers
             }
         }
 
+        public IHttpActionResult GetBusiness()
+        {
+            return Ok();
+        }
+
+
         public IHttpActionResult GetBusinesses()
         {
             try
