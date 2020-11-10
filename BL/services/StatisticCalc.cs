@@ -11,10 +11,12 @@ namespace BL.services
     {
         const int minSequence = 2;
         const int minToDivide = 6;
-        //parameters to determine if it is 
+        //parameters to determine if it is return 
         const int weekly = 10;
         const int monthly = 5;
         const int yearly = 3;
+        static Func<customersInLine, double> lenOfServiceSelector = (cust) => (cust.exitHour.Value - cust.actualHour.Value).TotalMinutes;
+        static Func<customersInLine, double> lenOfWaitingSelector = (cust) => (cust.exitHour.Value - cust.actualHour.Value).TotalMinutes;
 
 
         /// <summary>
@@ -108,29 +110,29 @@ namespace BL.services
             if (IsServiceDuration)
             {
                 activityTimeAvg = activityTime.actualServiceDuration.Value;
-                newAvg = line.Average(t => (t.exitHour.Value - t.actualHour.Value).TotalMinutes);
+                newAvg = line.Average(lenOfServiceSelector);
             }
             else
             {
                 activityTimeAvg = activityTime.avgWaitings.Value;
-                newAvg = line.Average(t => t.numOfPushTimes.Value);
+                newAvg = line.Average(lenOfWaitingSelector);
             }
             weightedAverage = (activityTimeAvg * activityTime.sampleSize.Value + newAvg * line.Count()) / totalSampleSize;
             double newStandardDeviation = calcStandartDeviation(line, IsServiceDuration);
-           //todo: double weightedStandardDeviation = (activityTime.sampleSize.Value * Math.Sqrt(activityTime.sStandardDeviation.Value) + line.Count() * Math.Sqrt(newStandardDeviation));
-          //  weightedStandardDeviation += Math.Sqrt(activityTime.sampleSize.Value * (activityTimeAvg - weightedAverage)) + Math.Sqrt(line.Count() * (newAvg - weightedAverage));
-           // weightedStandardDeviation /= totalSampleSize;
-           //todo: להוציא שורש מכל הסיפור הזה כי זה שונות משוקללת  ולא סטית תקן
+            //todo: double weightedStandardDeviation = (activityTime.sampleSize.Value * Math.Sqrt(activityTime.sStandardDeviation.Value) + line.Count() * Math.Sqrt(newStandardDeviation));
+            //  weightedStandardDeviation += Math.Sqrt(activityTime.sampleSize.Value * (activityTimeAvg - weightedAverage)) + Math.Sqrt(line.Count() * (newAvg - weightedAverage));
+            // weightedStandardDeviation /= totalSampleSize;
+            //todo: להוציא שורש מכל הסיפור הזה כי זה שונות משוקללת  ולא סטית תקן
             activityTime.sampleSize = totalSampleSize;
             if (IsServiceDuration)
             {
                 activityTime.actualServiceDuration = weightedAverage;
-              //  activityTime.serviceStandardDeviation = weightedStandardDeviation;
+                //  activityTime.serviceStandardDeviation = weightedStandardDeviation;
             }
             else
             {
                 activityTime.avgWaitings = weightedAverage;
-             //   activityTime. waitingStandardDeviation = weightedStandardDeviation;
+                //   activityTime. waitingStandardDeviation = weightedStandardDeviation;
             }
             ActivityTimeDal.updateActivityTime(activityTime);
         }
@@ -139,14 +141,14 @@ namespace BL.services
         {
             DAL.unusual unusual;
             int activityTimeId = unusalLine.ToList()[0].activityTimeId;
-            double standartDeviation= calcStandartDeviation(unusalLine,IsServiceDuration);
-          if (IsServiceDuration)
+            double standartDeviation = calcStandartDeviation(unusalLine, IsServiceDuration);
+            if (IsServiceDuration)
             {
-                 unusual = new unusual(activityTimeId, unusalLine.Average(t => (t.exitHour.Value - t.actualHour.Value).TotalMinutes),
-                 true,
-                 unusalLine[0].estimatedHour.Add(unusalLine[0].actualHour.Value - unusalLine[0].estimatedHour.TimeOfDay),
-                 unusalLine[unusalLine.Count() - 1].exitHour.Value,
-                 standartDeviation);
+                unusual = new unusual(activityTimeId, unusalLine.Average(lenOfServiceSelector),
+                true,
+                unusalLine[0].estimatedHour.Add(unusalLine[0].actualHour.Value - unusalLine[0].estimatedHour.TimeOfDay),
+                unusalLine[unusalLine.Count() - 1].exitHour.Value,
+                standartDeviation);
             }
             else
             {
@@ -157,11 +159,11 @@ namespace BL.services
                standartDeviation);
 
             }
-                      UnusualDal.AddUnUsual(unusual);
+            UnusualDal.AddUnUsual(unusual);
             scanUnusuals(unusual);
 
         }
-     
+
 
         static double calcStandartDeviation(List<customersInLine> line, bool IsServiceDuration)
         {
@@ -171,19 +173,20 @@ namespace BL.services
             int count = line.Count();
             if (count > 1)
             {
-                double sum,avg;
+                double sum, avg;
                 //Perform the Sum of (value-avg)^2
                 if (IsServiceDuration)
                 {
-                  avg= line.Average(t => (t.exitHour.Value - t.actualHour.Value).TotalMinutes);
+                    avg = line.Average(lenOfServiceSelector);
                     sum = line.Sum(t => ((t.exitHour.Value - t.actualHour.Value).TotalMinutes - avg) * ((t.exitHour.Value - t.actualHour.Value).TotalMinutes - avg));
                 }
 
                 else
 
                 {
-                    avg= line.Average(t => t.numOfPushTimes.Value);
-                    sum = line.Sum(t => ((t.numOfPushTimes.Value - avg) * (t.numOfPushTimes.Value - avg))); }
+                    avg = line.Average(lenOfWaitingSelector);
+                    sum = line.Sum(t => ((t.numOfPushTimes.Value - avg) * (t.numOfPushTimes.Value - avg)));
+                }
                 //Put it all together
                 ret = Math.Sqrt(sum / count);
             }

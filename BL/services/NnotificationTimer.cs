@@ -15,21 +15,24 @@ namespace BL.services
             // Create a timer with a two second interval-ask if interval is appropriate.
             //Interval property is in milliseconds.
             // 1 sec = 1000 milliseconds
-            Timer timer = new Timer(1000);
+            Timer timer = new Timer(60000);
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;
         }
         private async static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            var allTurns = DAL.TurnDal.GetAllCustomersInTurn();
-            foreach (var item in allTurns)
-            {
-                if (item.estimatedHour.AddMinutes(-item.preAlert) == DateTime.Now)
+          //  var allTurns = DAL.TurnDal.GetAllCustomersInTurn();
+          //  foreach (var item in allTurns)
+           // {
+                //check if there is correct token and if the time to alert is now)
+           //    if (item.customer.firebaseToken.Length!=1&& item.estimatedHour.AddMinutes(-item.preAlert) == DateTime.Now)
                     //מפעיל את שליחת ההתרעה
-                    await NotificationService.SendNotification("שים לב התראה  OnLine", "התור שלך הוא בעוד"+item.preAlert+"דקות","dPv0MIzGuNalZexTO6l7z7:APA91bExex--KgM8i8HbOZkoZgeGmZXFSR16NezbDTp479A9K3vVAd5m69z3rLJOI-bkRAkuCkzag280V1o-z3wJ4occOiXOr2-4k5DTzOzBftt0DgZXqMT2kI_0FcGud_gOR5vFkXV7"); 
-                
-            }
+           //         await NotificationService.SendNotification("שים לב התראה  OnLine", "התור שלך הוא בעוד"+item.preAlert+"דקות",item.customer.firebaseToken); 
+
+          //  }
+               //    await NotificationService.SendNotification("שים לב התראה  OnLine", "התור שלך הוא בעודדקות", "fPVOygOBeEq2ACHlpHIXga:APA91bGZ2Z4dkMHEGsdtw9-4hyINJqhY1pCW4vFhOEWN6kG5kjf3qGgBdjNACLXkXMVazNdd-DXScvmIiULHEDBVxH8ITNXP72hecOEeLBiqoKnKdINShRz2dBP7fyPBGKvooBXtff8I"); 
+
         }
     }
 }
