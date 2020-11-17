@@ -1,2 +1,5 @@
+
+    <add name="onLineEntities1" connectionString="metadata=res://*/Model1.csdl|res://*/Model1.ssdl|res://*/Model1.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=DESKTOP-PIHKCPU;initial catalog=onLine;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+
 http://localhost:52764/turn/turnByCategory?categoryId=5&latitude=32.109333&longitude=34.855499&isDriving=true
 

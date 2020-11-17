@@ -58,6 +58,7 @@ namespace API.Controllers
         [HttpPut]
         public IHttpActionResult UpdateTurn([FromBody]DTO.TurnDetailsDTO turn)
         {
+            //לציין בהגשה שטיפלנו באפשרות של מספר עובדים 
             try
             {
                 if (turn.ActualHour == new TimeSpan())
