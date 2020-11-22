@@ -31,7 +31,29 @@ namespace BL
         {
             int businessId = BusinessDal.AddBusiness(converters.BusinessConverters.GetBusiness(businessToAdd));
             return businessId;
-            
+
+        }
+        /// <summary>
+        /// get the avg per-day in all services of specific business
+        /// </summary>
+        /// <param name="businessId"></param>
+        /// <returns></returns>
+        public static List<List<double>> GetAvgForBusiness(int businessId)
+        {
+            //todo: check if it is cprrect
+            List<List<double>> avgForService = new List<List<double>>();
+            var services = DAL.BusinessDal.GetBusinessById(businessId).services;
+            int cnt = 0;
+            foreach (var item in services)
+            {
+                var activityTimes = ActivityTimeDal.GetActivityTimes(item.serviceId);
+                for (int i = 0; i < 7; i++)
+                {
+                    avgForService[cnt][i] = activityTimes.Where(a => a.dayInWeek == i + 1).Average(a => a.avgWaitings.Value);
+                }
+                cnt++;
+            }
+            return avgForService;
         }
 
     }

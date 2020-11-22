@@ -11,7 +11,15 @@ namespace BL.services
 {
     static public  class TurnServices
     {
-
+        //totake:
+        /// <summary>
+        ///return the distance between two adresses consider the mode:walking/driving
+        /// </summary>
+        /// <param name="startLongitude"></param>
+        /// <param name="startLatitude"></param>
+        /// <param name="destination"></param>
+        /// <param name="isDriving"></param>
+        /// <returns></returns>
         public static int GooglePlaces(string startLongitude, string startLatitude,string destination,bool isDriving)
         {
             string mode="walking";

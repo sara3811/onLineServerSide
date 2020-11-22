@@ -7,11 +7,12 @@ using DAL;
 
 namespace BL.services
 {
+    //totake: את כל המחלקה
     public class StatisticCalc
     {
         const int minSequence = 2;
         const int minToDivide = 6;
-        //parameters to determine if it is return 
+        //parameters to determine if it is return  
         const int weekly = 10;
         const int monthly = 5;
         const int yearly = 3;
@@ -20,11 +21,12 @@ namespace BL.services
 
 
         /// <summary>
-        /// 
+        /// function that check if turn is unusual
         /// </summary>
         /// <param name="turn"></param>
         /// <param name="actualDuration"></param>
-        /// <returns>if this turn is unusual</returns>
+        /// <param name="IsServiceDuration"></param>
+        /// <returns>if+ this turn is unusual</returns>
         private static bool IsSignificantDeviation(customersInLine turn, double actualDuration, bool IsServiceDuration)
         {
             double currentLen;
@@ -136,7 +138,11 @@ namespace BL.services
             }
             ActivityTimeDal.updateActivityTime(activityTime);
         }
-
+        /// <summary>
+        /// add the unusual data to the table
+        /// </summary>
+        /// <param name="unusalLine"></param>
+        /// <param name="IsServiceDuration"></param>
         private static void SetUnusualActivityTime(List<customersInLine> unusalLine, bool IsServiceDuration)
         {
             DAL.unusual unusual;
@@ -164,7 +170,12 @@ namespace BL.services
 
         }
 
-
+        /// <summary>
+        /// calc standartDeviation
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="IsServiceDuration"></param>
+        /// <returns></returns>
         static double calcStandartDeviation(List<customersInLine> line, bool IsServiceDuration)
         {
 
@@ -192,6 +203,10 @@ namespace BL.services
             }
             return ret;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="activityTimeId"></param>
         public static void calcAvgServiceDuration(int activityTimeId)
         {
             DAL.activityTime activityTime = ActivityTimeDal.GetActivityTimeById(activityTimeId);
@@ -211,7 +226,10 @@ namespace BL.services
             findUnusualSequences(activityTimeId, avg, false);
 
         }
-
+        /// <summary>
+        /// scan the table unusual to check if there is unusual that return and if so create new activity-time with the update data
+        /// </summary>
+        /// <param name="unusual"></param>
         private static void scanUnusuals(DAL.unusual unusual)
         {
             //כרגע אין פה התיחסות לחריגות של משמרות מיוחדות
