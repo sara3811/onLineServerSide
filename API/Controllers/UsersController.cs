@@ -12,7 +12,8 @@ namespace API.Controllers
     [EnableCors("*", "*", "*")]
     public class UsersController : ApiController
     {
-        public IHttpActionResult GetToken(string name, string phone,string token)
+        //todo: what is  this  token?
+        public IHttpActionResult GetToken(string name, string phone,string token="")
         {
             try
             {

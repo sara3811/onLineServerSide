@@ -47,7 +47,7 @@
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -180,7 +180,7 @@
     <Compile Include="models\IAuthContainerModel.cs" />
     <Compile Include="models\JWTContainerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="services\NnotificationTimer.cs" />
+    <Compile Include="services\NotificationTimer.cs" />
     <Compile Include="services\NotifactionService.cs" />
     <Compile Include="services\StatisticCalc.cs" />
     <Compile Include="services\TurnServices.cs" />

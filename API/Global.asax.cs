@@ -12,7 +12,7 @@ namespace API
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            BL.services.NnotificationTimer.StartTimer();
+            BL.services.NotificationTimer.StartTimer();
         }
         
         protected void Application_BeginRequest()
