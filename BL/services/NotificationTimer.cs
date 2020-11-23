@@ -7,8 +7,15 @@ using System.Timers;
 
 namespace BL.services
 {
+<<<<<<< HEAD
     public class NotificationTimer
     {
+=======
+    public class NnotificationTimer
+    {//totake:את כל המחלקה 
+     //פונקציות היוצרות טיימר שבכל דקה נתונה מבצע בדיקה
+     //ומפעילות שליחת התראה לתורים שאמורים לקבלה בזמן זה
+>>>>>>> 9b54f49236dcce9ef556932bae3cbb80dda7e0a8
         public static void StartTimer()
         {
 
@@ -23,9 +30,9 @@ namespace BL.services
         private async static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             var allTurns = DAL.TurnDal.GetAllCustomersInTurn();
-
             foreach (var item in allTurns)
             {
+<<<<<<< HEAD
                 //check if there is correct token and if the time to alert is now)
                 if (item.customer.firebaseToken.Length != 1 && item.estimatedHour.AddMinutes(-item.preAlert) == DateTime.Now)
                     //מפעיל את שליחת ההתרעה
@@ -34,6 +41,12 @@ namespace BL.services
             }
 
 
+=======
+                //check if there is correct token an23d if the time to alert is now)
+                if (item.customer.firebaseToken.Length != 1 && item.estimatedHour.AddMinutes(-item.preAlert) == DateTime.Now)
+                    await NotificationService.SendNotification("", "", item.customer.firebaseToken);
+            }
+>>>>>>> 9b54f49236dcce9ef556932bae3cbb80dda7e0a8
         }
     }
 }

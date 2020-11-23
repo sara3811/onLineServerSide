@@ -53,7 +53,14 @@ namespace BL
 
 
 
-
+//totake:
+/// <summary>
+/// looks for available turn in activityTime,begin to search from the time she got.  
+/// </summary>
+/// <param name="activityTime"></param>
+/// <param name="pushFlag"></param>
+/// <param name="timeToLookFor"></param>
+/// <returns></returns>
         private static TimeSpan? lookForAvailableTurn(ActivityTimeDTO activityTime, ref bool pushFlag, TimeSpan timeToLookFor)
         {
             List<customersInLine> line = TurnDal.GetLinePerActivityTime(activityTime.ActivityTimeId);
@@ -61,7 +68,7 @@ namespace BL
             double durationOfService = (double)activityTime.ActualDurationOfService;
             //מחשב את ההפרש בין זמן התחלת המשמרת לזמן שקבלנו בפרמטר ע"מ למצוא את הזמן שבו יתחיל לחפש תור 
             int totalPassedShifts = (int)((timeToLookFor.TotalMinutes - activityTime.StartTime.TotalMinutes) / durationOfService) + 1;
-            // לקבוע פרמטר של פנוי שיהיה לפי ממוצע זמן ההמתנה
+            //  פרמטר של פנוי שיהיה לפי ממוצע זמן ההמתנה
             const int maxStandbyTime = 3;
             const int maxPushedTimes = 2;
             TimeSpan hour;
@@ -69,31 +76,36 @@ namespace BL
             int index = 0, numOfStandbyTime = 0;
             timeToLookFor = activityTime.StartTime.Add(ts);
             line = line.Where(t => t.estimatedHour.TimeOfDay >= timeToLookFor).ToList();
+            //השעה המבוקשת פנויה
             if (line.Count() == 0 && timeToLookFor < activityTime.EndTime)
-                //todoever: לבדוק חוקיות עסקים -כלומר שהם קימים באמת
                 return timeToLookFor;
             ts = TimeSpan.FromMinutes(durationOfService);
+            //לולאה המתחילה מהזמן שקבלה ומחפשת תור פנוי            
             for (hour = timeToLookFor; numOfStandbyTime < maxStandbyTime && hour < activityTime.EndTime; hour = hour.Add(ts), numOfStandbyTime++)
             {
-                //todoever: לבדוק גם מקרים של מרווחי זמן הקטנים מזמן השירות- להתייחס לקביעת תור עם אפשרות לכל זמן ולא דווקא בזמנים קבועים
                 if (TurnBL.IsAvailableHour(ref index, activityTime.NumOfWorkers, hour.Add(ts), line))
                     return hour;
                 index++;
             }
+            //אם לא נמצא תור פנוי בתוך זמן ההמתנה המקסימלי שמאופשר:
+            //אם כבר המשמרת הנוכחית תפוסה לגמרי
             if (hour >= activityTime.EndTime)
             {
+                //מחפש את המשמרת הבאה הקרובה ביותר 
                 activityTime = ActivityTimeBL.GetNearestActivityTime(hour, activityTime.ServiceId);
                 if (activityTime == null)
                     return null;
+                //קורא בצורה רקורסיבית לפונקציה הנוכחית ומתחיל את החיפוש תור פנוי במשמרת החדשה מההתחלה
                 return lookForAvailableTurn(activityTime, ref pushFlag, activityTime.StartTime);
             }
+            //אם המשמרת עדיין לא נגמרה אבל הזמן המקסימלי להמתנה עבר ואין תור פנוי אז יש צורך לדחוף את  התור בין התורים
             pushFlag = true;
             while (index < line.Count() && line[index].estimatedHour.TimeOfDay == hour && line[index].numOfPushTimes == maxPushedTimes)
             {
                 index++;
                 hour = hour.Add(ts);
             }
-            //todoever: לבדוק את הלולאות ותקינות ההחזרה
+            
             return hour;
         }
 
@@ -116,7 +128,11 @@ namespace BL
 
 
 
-
+        /// <summary>
+        /// confirm the turn and add it to the table
+        /// </summary>
+        /// <param name="turn"></param>
+        /// <returns></returns>
 
         public static string ConfirmImmediateTurn(TurnDetailsDTO turn)
         {

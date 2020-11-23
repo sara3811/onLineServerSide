@@ -8,20 +8,14 @@ using System.Threading.Tasks;
 
 namespace BL.services
 {
-    class NotificationService 
+    /// <summary>
+    /// class that create notifaction and send it to the client
+    /// </summary>
+    class NotificationService
     {
-       
-        //public static void SetOnNotifaction()
-        //{
-        //    var allTurns = DAL.TurnDal.GetAllCustomersInTurn();
-        //    foreach (var item in allTurns)
-        //    {
-        //        if (item.estimatedHour.AddMinutes(-item.preAlert) == DateTime.Now)
-        //            //מפעיל את שליחת ההתרעה
-        //           // SendNotification("","", item.customer.userToken);
-        //    }
 
-        //}
+        //totake:את כל המחלקה
+
         public static async Task SendNotification(string title, string body, string userToken)
         {
             try

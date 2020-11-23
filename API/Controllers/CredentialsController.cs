@@ -1,5 +1,4 @@
-﻿using DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,7 +12,20 @@ namespace API.Controllers
 
     public class CredentialsController : ApiController
     {
-        public IHttpActionResult Post([FromBody]UserDTO user)
+        //todo: לחשוב מהו המיקום המתאים לפונקציה
+        public IHttpActionResult Get(int businesseId)
+        {
+            try
+            {
+                return Ok(BL.BusinessBL.GetAvgForBusiness(businesseId));
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+        public IHttpActionResult Post(/*[FromBody]UserDto usre*/)
         {
             try
             {
