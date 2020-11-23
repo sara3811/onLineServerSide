@@ -17,7 +17,7 @@ namespace DAL
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
 
-                    return entities.customersInLines.Where(t=>t.isActive==true&&t.preAlert>0).ToList();
+                    return entities.customersInLines.Where(t=>t.isActive==true&&t.preAlert>0).Include("customer").ToList();
                 }
             }
             catch (Exception)

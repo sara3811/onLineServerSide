@@ -13,7 +13,7 @@ namespace API.Controllers
     public class UsersController : ApiController
     {
         //todo: what is  this  token?
-        public IHttpActionResult GetToken(string name, string phone,string token="")
+        public IHttpActionResult GetToken(string name, string phone,string token)
         {
             try
             {
