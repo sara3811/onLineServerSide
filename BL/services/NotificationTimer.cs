@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace BL.services
 {
-    public class NnotificationTimer
+    public class NotificationTimer
     {//totake:את כל המחלקה 
      //פונקציות היוצרות טיימר שבכל דקה נתונה מבצע בדיקה
      //ומפעילות שליחת התראה לתורים שאמורים לקבלה בזמן זה
