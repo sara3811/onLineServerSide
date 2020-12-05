@@ -14,7 +14,23 @@ namespace DAL
             {
                 using (onLineEntities1 entities1 = new onLineEntities1())
                 {
-                    return entities1.services.Include("business").Where(s => s.categoryId == categoryId).ToList();
+                    return entities1.services.Include("business").Include("activityTimes").Where(s => s.categoryId == categoryId).ToList();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public static List<service> GetServicesByBussiness(int businessId)
+        {
+            try
+            {
+                using (onLineEntities1 entities1 = new onLineEntities1())
+                {
+                    return entities1.services.Include("activityTimes").Where(s => s.businessId == businessId).ToList();
                 }
             }
             catch (Exception)

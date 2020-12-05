@@ -30,9 +30,7 @@ namespace DAL
         public virtual DbSet<category> categories { get; set; }
         public virtual DbSet<customer> customers { get; set; }
         public virtual DbSet<customersInLine> customersInLines { get; set; }
-        public virtual DbSet<ranx> ranges { get; set; }
         public virtual DbSet<service> services { get; set; }
-        public virtual DbSet<swap> swaps { get; set; }
         public virtual DbSet<unusual> unusuals { get; set; }
     }
 }

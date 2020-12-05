@@ -31,17 +31,25 @@ namespace DAL
             {
                 using (onLineEntities1 entities1 = new onLineEntities1())
                 {
-                    return  entities1.customers.FirstOrDefault(c => c.phoneNumber == phone).custId;
+                    return entities1.customers.FirstOrDefault(c => c.phoneNumber == phone).custId;
                 }
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 throw new NullReferenceException("משתמש לא קיים");
-    }
+            }
             catch
             {
                 throw;
             }
         }
+        public static int GetNumOfCustomers()
+        {
+            using (onLineEntities1 entities1 = new onLineEntities1())
+            {
+                return entities1.customers.Count();
+            }
+        }
     }
+
 }

@@ -14,6 +14,6 @@ namespace DTO
         public string Password { get; set; }
         public string Address { get; set; }
         public int ChainManagerId { get; set; }
-        public List<ServiceDTO> Services { get; set; }
+        public List<BasicServiceDTO> Services { get; set; }
     }
 }

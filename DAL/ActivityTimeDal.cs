@@ -10,13 +10,13 @@ namespace DAL
     {
         public static List<activityTime> GetActivityTimes(int serviceId)
         {
-            using (onLineEntities1 entities=new onLineEntities1())
+            using (onLineEntities1 entities = new onLineEntities1())
             {
                 return entities.activityTimes.Where(a => a.serviceId == serviceId).ToList();
             }
         }
-
-        public static List<activityTime> GetActivityTimesByDay(int serviceId,int day)
+       
+            public static List<activityTime> GetActivityTimesByDay(int serviceId,int day)
         {
             using(onLineEntities1 entities = new onLineEntities1())
             {
@@ -32,14 +32,14 @@ namespace DAL
             }
         }
 
-        public static void updateActivityTime(activityTime activityTime)
+        public static void UpdateActivityTime(activityTime activityTime)
         {
             try
             {
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
                     var updateActivityTime = entities.activityTimes.FirstOrDefault(a => a.activityTimeId == activityTime.activityTimeId);
-                    updateActivityTime.actualServiceDuration = activityTime.actualServiceDuration.Value;
+                    updateActivityTime.avgServiceDuration = activityTime.avgServiceDuration.Value;
                   //todo:  updateActivityTime.StandardDeviation = activityTime.StandardDeviation.Value;
                     updateActivityTime.sampleSize=updateActivityTime.sampleSize.Value;
                     entities.SaveChanges();

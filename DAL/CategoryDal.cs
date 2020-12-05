@@ -22,5 +22,13 @@ namespace DAL
                 throw;
             }
         }
+
+        public static int GetNumOfCategories()
+        {
+            using (onLineEntities1 entities1 = new onLineEntities1())
+            {
+                return entities1.categories.Count();
+            }
+        }
     }
 }

@@ -81,7 +81,7 @@ namespace BL
             {
                 activityTime activityTime = activityTimes[activityTimeIndex];
                 List<customersInLine> line = TurnDal.GetLinePerActivityTime(activityTime.activityTimeId);
-                double durationOfService = activityTime.actualServiceDuration.Value;
+                double durationOfService = activityTime.avgServiceDuration.Value;
                 TimeSpan ts = TimeSpan.FromMinutes(durationOfService);
                 for (TimeSpan hour = activityTime.startTime; hour < activityTime.endTime; hour = hour.Add(ts))
                 {
@@ -112,9 +112,9 @@ namespace BL
             int numOfIgnoreServiceDuration = 3;
             //
 
-            int numOfSub = (int)(activityTime.AverageNumOfWaitingPeople.Value / activityTime.ActualDurationOfService - numOfIgnoreServiceDuration);
+            int numOfSub = (int)(activityTime.AverageNumOfWaitingPeople.Value / activityTime.AvgServiceDuration - numOfIgnoreServiceDuration);
 
-            logicHour = date.TimeOfDay.Subtract(TimeSpan.FromMinutes(activityTime.ActualDurationOfService.Value * numOfSub));
+            logicHour = date.TimeOfDay.Subtract(TimeSpan.FromMinutes(activityTime.AvgServiceDuration.Value * numOfSub));
             if (logicHour > activityTime.StartTime)
                 return logicHour;
             else

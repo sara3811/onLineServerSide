@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="onLineModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="onLineModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="activityTimes">
           <Key>
             <PropertyRef Name="activityTimeId" />
@@ -17,12 +17,10 @@
           <Property Name="startDate" Type="date" />
           <Property Name="endDate" Type="date" />
           <Property Name="numOfWorkers" Type="int" Nullable="false" />
-          <Property Name="estimatedServiceDuration" Type="int" Nullable="false" />
-          <Property Name="actualServiceDuration" Type="float" />
           <Property Name="serviceStandardDeviation" Type="float" />
           <Property Name="waitingStandardDeviation" Type="float" />
           <Property Name="avgWaitings" Type="float" />
-          <Property Name="avgServiceDuration" Type="int" />
+          <Property Name="avgServiceDuration" Type="float" />
           <Property Name="sampleSize" Type="int" />
         </EntityType>
         <EntityType Name="businesses">
@@ -32,6 +30,7 @@
           <Property Name="businessId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="businessName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="password" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="managerPassword" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="adress_city" Type="nvarchar(max)" Nullable="false" />
           <Property Name="adress_street" Type="nvarchar(max)" Nullable="false" />
           <Property Name="adress_numOfStreet" Type="int" Nullable="false" />
@@ -72,16 +71,6 @@
           <Property Name="numOfPushTimes" Type="int" />
           <Property Name="isActive" Type="bit" />
         </EntityType>
-        <EntityType Name="ranges">
-          <Key>
-            <PropertyRef Name="turnId" />
-            <PropertyRef Name="startTime" />
-            <PropertyRef Name="endTime" />
-          </Key>
-          <Property Name="turnId" Type="int" Nullable="false" />
-          <Property Name="startTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="endTime" Type="time" Precision="7" Nullable="false" />
-        </EntityType>
         <EntityType Name="services">
           <Key>
             <PropertyRef Name="serviceId" />
@@ -92,15 +81,6 @@
           <Property Name="businessId" Type="int" Nullable="false" />
           <Property Name="kindOfPermission" Type="bit" Nullable="false" />
           <Property Name="limitDays" Type="int" />
-        </EntityType>
-        <EntityType Name="swaps">
-          <Key>
-            <PropertyRef Name="swapId" />
-          </Key>
-          <Property Name="swapId" Type="int" Nullable="false" />
-          <Property Name="turnId" Type="int" />
-          <Property Name="startTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="endTime" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="unusuals">
           <Key>
@@ -115,7 +95,7 @@
           <Property Name="kindOfUnusual" Type="bit" />
           <Property Name="isActive" Type="bit" />
         </EntityType>
-        <Association Name="FK__activityT__servi__1BFD2C07">
+        <Association Name="FK__activityT__servi__403A8C7D">
           <End Role="services" Type="Self.services" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -129,7 +109,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__customers__activ__22AA2996">
+        <Association Name="FK__customers__activ__46E78A0C">
           <End Role="activityTimes" Type="Self.activityTimes" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -143,7 +123,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__customers__custI__21B6055D">
+        <Association Name="FK__customers__custI__45F365D3">
           <End Role="customers" Type="Self.customers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -157,19 +137,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ranges__turnId__25869641">
-          <End Role="customersInLine" Type="Self.customersInLine" Multiplicity="1" />
-          <End Role="ranges" Type="Self.ranges" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="customersInLine">
-              <PropertyRef Name="TurnId" />
-            </Principal>
-            <Dependent Role="ranges">
-              <PropertyRef Name="turnId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__services__busine__182C9B23">
+        <Association Name="FK__services__busine__3C69FB99">
           <End Role="businesses" Type="Self.businesses" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -183,7 +151,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__services__catego__1920BF5C">
+        <Association Name="FK__services__catego__3D5E1FD2">
           <End Role="categories" Type="Self.categories" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -197,21 +165,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__swaps__turnId__286302EC">
-          <End Role="customersInLine" Type="Self.customersInLine" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="swaps" Type="Self.swaps" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="customersInLine">
-              <PropertyRef Name="TurnId" />
-            </Principal>
-            <Dependent Role="swaps">
-              <PropertyRef Name="turnId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__unusuals__activi__2B3F6F97">
+        <Association Name="FK__unusuals__activi__49C3F6B7">
           <End Role="activityTimes" Type="Self.activityTimes" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -231,48 +185,70 @@
           <EntitySet Name="categories" EntityType="Self.categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="customers" EntityType="Self.customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="customersInLine" EntityType="Self.customersInLine" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ranges" EntityType="Self.ranges" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="services" EntityType="Self.services" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="swaps" EntityType="Self.swaps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="unusuals" EntityType="Self.unusuals" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__activityT__servi__1BFD2C07" Association="Self.FK__activityT__servi__1BFD2C07">
+          <AssociationSet Name="FK__activityT__servi__403A8C7D" Association="Self.FK__activityT__servi__403A8C7D">
             <End Role="services" EntitySet="services" />
             <End Role="activityTimes" EntitySet="activityTimes" />
           </AssociationSet>
-          <AssociationSet Name="FK__customers__activ__22AA2996" Association="Self.FK__customers__activ__22AA2996">
+          <AssociationSet Name="FK__customers__activ__46E78A0C" Association="Self.FK__customers__activ__46E78A0C">
             <End Role="activityTimes" EntitySet="activityTimes" />
             <End Role="customersInLine" EntitySet="customersInLine" />
           </AssociationSet>
-          <AssociationSet Name="FK__customers__custI__21B6055D" Association="Self.FK__customers__custI__21B6055D">
+          <AssociationSet Name="FK__customers__custI__45F365D3" Association="Self.FK__customers__custI__45F365D3">
             <End Role="customers" EntitySet="customers" />
             <End Role="customersInLine" EntitySet="customersInLine" />
           </AssociationSet>
-          <AssociationSet Name="FK__ranges__turnId__25869641" Association="Self.FK__ranges__turnId__25869641">
-            <End Role="customersInLine" EntitySet="customersInLine" />
-            <End Role="ranges" EntitySet="ranges" />
-          </AssociationSet>
-          <AssociationSet Name="FK__services__busine__182C9B23" Association="Self.FK__services__busine__182C9B23">
+          <AssociationSet Name="FK__services__busine__3C69FB99" Association="Self.FK__services__busine__3C69FB99">
             <End Role="businesses" EntitySet="businesses" />
             <End Role="services" EntitySet="services" />
           </AssociationSet>
-          <AssociationSet Name="FK__services__catego__1920BF5C" Association="Self.FK__services__catego__1920BF5C">
+          <AssociationSet Name="FK__services__catego__3D5E1FD2" Association="Self.FK__services__catego__3D5E1FD2">
             <End Role="categories" EntitySet="categories" />
             <End Role="services" EntitySet="services" />
           </AssociationSet>
-          <AssociationSet Name="FK__swaps__turnId__286302EC" Association="Self.FK__swaps__turnId__286302EC">
-            <End Role="customersInLine" EntitySet="customersInLine" />
-            <End Role="swaps" EntitySet="swaps" />
-          </AssociationSet>
-          <AssociationSet Name="FK__unusuals__activi__2B3F6F97" Association="Self.FK__unusuals__activi__2B3F6F97">
+          <AssociationSet Name="FK__unusuals__activi__49C3F6B7" Association="Self.FK__unusuals__activi__49C3F6B7">
             <End Role="activityTimes" EntitySet="activityTimes" />
             <End Role="unusuals" EntitySet="unusuals" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="onLineModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="onLineEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="activityTimes" EntityType="onLineModel.activityTime" />
+          <EntitySet Name="businesses" EntityType="onLineModel.business" />
+          <EntitySet Name="categories" EntityType="onLineModel.category" />
+          <EntitySet Name="customers" EntityType="onLineModel.customer" />
+          <EntitySet Name="customersInLines" EntityType="onLineModel.customersInLine" />
+          <EntitySet Name="services" EntityType="onLineModel.service" />
+          <EntitySet Name="unusuals" EntityType="onLineModel.unusual" />
+          <AssociationSet Name="FK__activityT__servi__403A8C7D" Association="onLineModel.FK__activityT__servi__403A8C7D">
+            <End Role="service" EntitySet="services" />
+            <End Role="activityTime" EntitySet="activityTimes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customers__activ__46E78A0C" Association="onLineModel.FK__customers__activ__46E78A0C">
+            <End Role="activityTime" EntitySet="activityTimes" />
+            <End Role="customersInLine" EntitySet="customersInLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK__unusuals__activi__49C3F6B7" Association="onLineModel.FK__unusuals__activi__49C3F6B7">
+            <End Role="activityTime" EntitySet="activityTimes" />
+            <End Role="unusual" EntitySet="unusuals" />
+          </AssociationSet>
+          <AssociationSet Name="FK__services__busine__3C69FB99" Association="onLineModel.FK__services__busine__3C69FB99">
+            <End Role="business" EntitySet="businesses" />
+            <End Role="service" EntitySet="services" />
+          </AssociationSet>
+          <AssociationSet Name="FK__services__catego__3D5E1FD2" Association="onLineModel.FK__services__catego__3D5E1FD2">
+            <End Role="category" EntitySet="categories" />
+            <End Role="service" EntitySet="services" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customers__custI__45F365D3" Association="onLineModel.FK__customers__custI__45F365D3">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="customersInLine" EntitySet="customersInLines" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="activityTime">
           <Key>
             <PropertyRef Name="activityTimeId" />
@@ -285,49 +261,48 @@
           <Property Name="startDate" Type="DateTime" Precision="0" />
           <Property Name="endDate" Type="DateTime" Precision="0" />
           <Property Name="numOfWorkers" Type="Int32" Nullable="false" />
-          <Property Name="estimatedServiceDuration" Type="Int32" Nullable="false" />
-          <Property Name="actualServiceDuration" Type="Double" />
           <Property Name="serviceStandardDeviation" Type="Double" />
           <Property Name="waitingStandardDeviation" Type="Double" />
           <Property Name="avgWaitings" Type="Double" />
-          <Property Name="avgServiceDuration" Type="Int32" />
+          <Property Name="avgServiceDuration" Type="Double" />
           <Property Name="sampleSize" Type="Int32" />
-          <NavigationProperty Name="service" Relationship="Self.FK__activityT__servi__1BFD2C07" FromRole="activityTimes" ToRole="services" />
-          <NavigationProperty Name="customersInLines" Relationship="Self.FK__customers__activ__22AA2996" FromRole="activityTimes" ToRole="customersInLine" />
-          <NavigationProperty Name="unusuals" Relationship="Self.FK__unusuals__activi__2B3F6F97" FromRole="activityTimes" ToRole="unusuals" />
+          <NavigationProperty Name="service" Relationship="onLineModel.FK__activityT__servi__403A8C7D" FromRole="activityTime" ToRole="service" />
+          <NavigationProperty Name="customersInLines" Relationship="onLineModel.FK__customers__activ__46E78A0C" FromRole="activityTime" ToRole="customersInLine" />
+          <NavigationProperty Name="unusuals" Relationship="onLineModel.FK__unusuals__activi__49C3F6B7" FromRole="activityTime" ToRole="unusual" />
         </EntityType>
         <EntityType Name="business">
           <Key>
             <PropertyRef Name="businessId" />
           </Key>
           <Property Name="businessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="businessName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="adress_city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="adress_street" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="businessName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="managerPassword" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="adress_city" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="adress_street" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="adress_numOfStreet" Type="Int32" Nullable="false" />
           <Property Name="managerid" Type="Int32" />
-          <NavigationProperty Name="services" Relationship="Self.FK__services__busine__182C9B23" FromRole="businesses" ToRole="services" />
+          <NavigationProperty Name="services" Relationship="onLineModel.FK__services__busine__3C69FB99" FromRole="business" ToRole="service" />
         </EntityType>
         <EntityType Name="category">
           <Key>
             <PropertyRef Name="categoryId" />
           </Key>
           <Property Name="categoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="categoryName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="services" Relationship="Self.FK__services__catego__1920BF5C" FromRole="categories" ToRole="services" />
+          <Property Name="categoryName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="services" Relationship="onLineModel.FK__services__catego__3D5E1FD2" FromRole="category" ToRole="service" />
         </EntityType>
         <EntityType Name="customer">
           <Key>
             <PropertyRef Name="custId" />
           </Key>
           <Property Name="custId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="phoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="custName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phoneNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="custName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="latitude" Type="Double" />
           <Property Name="longitude" Type="Double" />
           <Property Name="firebaseToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="customersInLines" Relationship="Self.FK__customers__custI__21B6055D" FromRole="customers" ToRole="customersInLine" />
+          <NavigationProperty Name="customersInLines" Relationship="onLineModel.FK__customers__custI__45F365D3" FromRole="customer" ToRole="customersInLine" />
         </EntityType>
         <EntityType Name="customersInLine">
           <Key>
@@ -345,21 +320,8 @@
           <Property Name="verificationCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="numOfPushTimes" Type="Int32" />
           <Property Name="isActive" Type="Boolean" />
-          <NavigationProperty Name="activityTime" Relationship="Self.FK__customers__activ__22AA2996" FromRole="customersInLine" ToRole="activityTimes" />
-          <NavigationProperty Name="customer" Relationship="Self.FK__customers__custI__21B6055D" FromRole="customersInLine" ToRole="customers" />
-          <NavigationProperty Name="ranges" Relationship="Self.FK__ranges__turnId__25869641" FromRole="customersInLine" ToRole="ranges" />
-          <NavigationProperty Name="swaps" Relationship="Self.FK__swaps__turnId__286302EC" FromRole="customersInLine" ToRole="swaps" />
-        </EntityType>
-        <EntityType Name="ranx">
-          <Key>
-            <PropertyRef Name="turnId" />
-            <PropertyRef Name="startTime" />
-            <PropertyRef Name="endTime" />
-          </Key>
-          <Property Name="turnId" Type="Int32" Nullable="false" />
-          <Property Name="startTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="endTime" Type="Time" Nullable="false" Precision="7" />
-          <NavigationProperty Name="customersInLine" Relationship="Self.FK__ranges__turnId__25869641" FromRole="ranges" ToRole="customersInLine" />
+          <NavigationProperty Name="activityTime" Relationship="onLineModel.FK__customers__activ__46E78A0C" FromRole="customersInLine" ToRole="activityTime" />
+          <NavigationProperty Name="customer" Relationship="onLineModel.FK__customers__custI__45F365D3" FromRole="customersInLine" ToRole="customer" />
         </EntityType>
         <EntityType Name="service">
           <Key>
@@ -367,23 +329,13 @@
           </Key>
           <Property Name="serviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="categoryId" Type="Int32" Nullable="false" />
-          <Property Name="serviceName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="serviceName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="businessId" Type="Int32" Nullable="false" />
           <Property Name="kindOfPermission" Type="Boolean" Nullable="false" />
           <Property Name="limitDays" Type="Int32" />
-          <NavigationProperty Name="activityTimes" Relationship="Self.FK__activityT__servi__1BFD2C07" FromRole="services" ToRole="activityTimes" />
-          <NavigationProperty Name="business" Relationship="Self.FK__services__busine__182C9B23" FromRole="services" ToRole="businesses" />
-          <NavigationProperty Name="category" Relationship="Self.FK__services__catego__1920BF5C" FromRole="services" ToRole="categories" />
-        </EntityType>
-        <EntityType Name="swap">
-          <Key>
-            <PropertyRef Name="swapId" />
-          </Key>
-          <Property Name="swapId" Type="Int32" Nullable="false" />
-          <Property Name="turnId" Type="Int32" />
-          <Property Name="startTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="endTime" Type="Time" Nullable="false" Precision="7" />
-          <NavigationProperty Name="customersInLine" Relationship="Self.FK__swaps__turnId__286302EC" FromRole="swaps" ToRole="customersInLine" />
+          <NavigationProperty Name="activityTimes" Relationship="onLineModel.FK__activityT__servi__403A8C7D" FromRole="service" ToRole="activityTime" />
+          <NavigationProperty Name="business" Relationship="onLineModel.FK__services__busine__3C69FB99" FromRole="service" ToRole="business" />
+          <NavigationProperty Name="category" Relationship="onLineModel.FK__services__catego__3D5E1FD2" FromRole="service" ToRole="category" />
         </EntityType>
         <EntityType Name="unusual">
           <Key>
@@ -397,29 +349,29 @@
           <Property Name="standardDeviation" Type="Double" />
           <Property Name="kindOfUnusual" Type="Boolean" />
           <Property Name="isActive" Type="Boolean" />
-          <NavigationProperty Name="activityTime" Relationship="Self.FK__unusuals__activi__2B3F6F97" FromRole="unusuals" ToRole="activityTimes" />
+          <NavigationProperty Name="activityTime" Relationship="onLineModel.FK__unusuals__activi__49C3F6B7" FromRole="unusual" ToRole="activityTime" />
         </EntityType>
-        <Association Name="FK__activityT__servi__1BFD2C07">
-          <End Role="services" Type="Self.service" Multiplicity="1">
+        <Association Name="FK__activityT__servi__403A8C7D">
+          <End Type="onLineModel.service" Role="service" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="activityTimes" Type="Self.activityTime" Multiplicity="*" />
+          <End Type="onLineModel.activityTime" Role="activityTime" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="services">
+            <Principal Role="service">
               <PropertyRef Name="serviceId" />
             </Principal>
-            <Dependent Role="activityTimes">
+            <Dependent Role="activityTime">
               <PropertyRef Name="serviceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__customers__activ__22AA2996">
-          <End Role="activityTimes" Type="Self.activityTime" Multiplicity="1">
+        <Association Name="FK__customers__activ__46E78A0C">
+          <End Type="onLineModel.activityTime" Role="activityTime" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="customersInLine" Type="Self.customersInLine" Multiplicity="*" />
+          <End Type="onLineModel.customersInLine" Role="customersInLine" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="activityTimes">
+            <Principal Role="activityTime">
               <PropertyRef Name="activityTimeId" />
             </Principal>
             <Dependent Role="customersInLine">
@@ -427,55 +379,55 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__unusuals__activi__2B3F6F97">
-          <End Role="activityTimes" Type="Self.activityTime" Multiplicity="1">
+        <Association Name="FK__unusuals__activi__49C3F6B7">
+          <End Type="onLineModel.activityTime" Role="activityTime" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="unusuals" Type="Self.unusual" Multiplicity="*" />
+          <End Type="onLineModel.unusual" Role="unusual" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="activityTimes">
+            <Principal Role="activityTime">
               <PropertyRef Name="activityTimeId" />
             </Principal>
-            <Dependent Role="unusuals">
+            <Dependent Role="unusual">
               <PropertyRef Name="activityTimeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__services__busine__182C9B23">
-          <End Role="businesses" Type="Self.business" Multiplicity="1">
+        <Association Name="FK__services__busine__3C69FB99">
+          <End Type="onLineModel.business" Role="business" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="services" Type="Self.service" Multiplicity="*" />
+          <End Type="onLineModel.service" Role="service" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="businesses">
+            <Principal Role="business">
               <PropertyRef Name="businessId" />
             </Principal>
-            <Dependent Role="services">
+            <Dependent Role="service">
               <PropertyRef Name="businessId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__services__catego__1920BF5C">
-          <End Role="categories" Type="Self.category" Multiplicity="1">
+        <Association Name="FK__services__catego__3D5E1FD2">
+          <End Type="onLineModel.category" Role="category" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="services" Type="Self.service" Multiplicity="*" />
+          <End Type="onLineModel.service" Role="service" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="categories">
+            <Principal Role="category">
               <PropertyRef Name="categoryId" />
             </Principal>
-            <Dependent Role="services">
+            <Dependent Role="service">
               <PropertyRef Name="categoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__customers__custI__21B6055D">
-          <End Role="customers" Type="Self.customer" Multiplicity="1">
+        <Association Name="FK__customers__custI__45F365D3">
+          <End Type="onLineModel.customer" Role="customer" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="customersInLine" Type="Self.customersInLine" Multiplicity="*" />
+          <End Type="onLineModel.customersInLine" Role="customersInLine" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="customers">
+            <Principal Role="customer">
               <PropertyRef Name="custId" />
             </Principal>
             <Dependent Role="customersInLine">
@@ -483,75 +435,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ranges__turnId__25869641">
-          <End Role="customersInLine" Type="Self.customersInLine" Multiplicity="1" />
-          <End Role="ranges" Type="Self.ranx" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="customersInLine">
-              <PropertyRef Name="TurnId" />
-            </Principal>
-            <Dependent Role="ranges">
-              <PropertyRef Name="turnId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__swaps__turnId__286302EC">
-          <End Role="customersInLine" Type="Self.customersInLine" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="swaps" Type="Self.swap" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="customersInLine">
-              <PropertyRef Name="TurnId" />
-            </Principal>
-            <Dependent Role="swaps">
-              <PropertyRef Name="turnId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="onLineEntities1" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="activityTimes" EntityType="Self.activityTime" />
-          <EntitySet Name="businesses" EntityType="Self.business" />
-          <EntitySet Name="categories" EntityType="Self.category" />
-          <EntitySet Name="customers" EntityType="Self.customer" />
-          <EntitySet Name="customersInLines" EntityType="Self.customersInLine" />
-          <EntitySet Name="ranges" EntityType="Self.ranx" />
-          <EntitySet Name="services" EntityType="Self.service" />
-          <EntitySet Name="swaps" EntityType="Self.swap" />
-          <EntitySet Name="unusuals" EntityType="Self.unusual" />
-          <AssociationSet Name="FK__activityT__servi__1BFD2C07" Association="Self.FK__activityT__servi__1BFD2C07">
-            <End Role="services" EntitySet="services" />
-            <End Role="activityTimes" EntitySet="activityTimes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__customers__activ__22AA2996" Association="Self.FK__customers__activ__22AA2996">
-            <End Role="activityTimes" EntitySet="activityTimes" />
-            <End Role="customersInLine" EntitySet="customersInLines" />
-          </AssociationSet>
-          <AssociationSet Name="FK__unusuals__activi__2B3F6F97" Association="Self.FK__unusuals__activi__2B3F6F97">
-            <End Role="activityTimes" EntitySet="activityTimes" />
-            <End Role="unusuals" EntitySet="unusuals" />
-          </AssociationSet>
-          <AssociationSet Name="FK__services__busine__182C9B23" Association="Self.FK__services__busine__182C9B23">
-            <End Role="businesses" EntitySet="businesses" />
-            <End Role="services" EntitySet="services" />
-          </AssociationSet>
-          <AssociationSet Name="FK__services__catego__1920BF5C" Association="Self.FK__services__catego__1920BF5C">
-            <End Role="categories" EntitySet="categories" />
-            <End Role="services" EntitySet="services" />
-          </AssociationSet>
-          <AssociationSet Name="FK__customers__custI__21B6055D" Association="Self.FK__customers__custI__21B6055D">
-            <End Role="customers" EntitySet="customers" />
-            <End Role="customersInLine" EntitySet="customersInLines" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ranges__turnId__25869641" Association="Self.FK__ranges__turnId__25869641">
-            <End Role="customersInLine" EntitySet="customersInLines" />
-            <End Role="ranges" EntitySet="ranges" />
-          </AssociationSet>
-          <AssociationSet Name="FK__swaps__turnId__286302EC" Association="Self.FK__swaps__turnId__286302EC">
-            <End Role="customersInLine" EntitySet="customersInLines" />
-            <End Role="swaps" EntitySet="swaps" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -561,117 +444,97 @@
           <EntitySetMapping Name="activityTimes">
             <EntityTypeMapping TypeName="onLineModel.activityTime">
               <MappingFragment StoreEntitySet="activityTimes">
-                <ScalarProperty Name="activityTimeId" ColumnName="activityTimeId" />
-                <ScalarProperty Name="serviceId" ColumnName="serviceId" />
-                <ScalarProperty Name="dayInWeek" ColumnName="dayInWeek" />
-                <ScalarProperty Name="startTime" ColumnName="startTime" />
-                <ScalarProperty Name="endTime" ColumnName="endTime" />
-                <ScalarProperty Name="startDate" ColumnName="startDate" />
-                <ScalarProperty Name="endDate" ColumnName="endDate" />
-                <ScalarProperty Name="numOfWorkers" ColumnName="numOfWorkers" />
-                <ScalarProperty Name="estimatedServiceDuration" ColumnName="estimatedServiceDuration" />
-                <ScalarProperty Name="actualServiceDuration" ColumnName="actualServiceDuration" />
-                <ScalarProperty Name="serviceStandardDeviation" ColumnName="serviceStandardDeviation" />
-                <ScalarProperty Name="waitingStandardDeviation" ColumnName="waitingStandardDeviation" />
-                <ScalarProperty Name="avgWaitings" ColumnName="avgWaitings" />
-                <ScalarProperty Name="avgServiceDuration" ColumnName="avgServiceDuration" />
                 <ScalarProperty Name="sampleSize" ColumnName="sampleSize" />
+                <ScalarProperty Name="avgServiceDuration" ColumnName="avgServiceDuration" />
+                <ScalarProperty Name="avgWaitings" ColumnName="avgWaitings" />
+                <ScalarProperty Name="waitingStandardDeviation" ColumnName="waitingStandardDeviation" />
+                <ScalarProperty Name="serviceStandardDeviation" ColumnName="serviceStandardDeviation" />
+                <ScalarProperty Name="numOfWorkers" ColumnName="numOfWorkers" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="endTime" ColumnName="endTime" />
+                <ScalarProperty Name="startTime" ColumnName="startTime" />
+                <ScalarProperty Name="dayInWeek" ColumnName="dayInWeek" />
+                <ScalarProperty Name="serviceId" ColumnName="serviceId" />
+                <ScalarProperty Name="activityTimeId" ColumnName="activityTimeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="businesses">
             <EntityTypeMapping TypeName="onLineModel.business">
               <MappingFragment StoreEntitySet="businesses">
-                <ScalarProperty Name="businessId" ColumnName="businessId" />
-                <ScalarProperty Name="businessName" ColumnName="businessName" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="adress_city" ColumnName="adress_city" />
-                <ScalarProperty Name="adress_street" ColumnName="adress_street" />
-                <ScalarProperty Name="adress_numOfStreet" ColumnName="adress_numOfStreet" />
                 <ScalarProperty Name="managerid" ColumnName="managerid" />
+                <ScalarProperty Name="adress_numOfStreet" ColumnName="adress_numOfStreet" />
+                <ScalarProperty Name="adress_street" ColumnName="adress_street" />
+                <ScalarProperty Name="adress_city" ColumnName="adress_city" />
+                <ScalarProperty Name="managerPassword" ColumnName="managerPassword" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="businessName" ColumnName="businessName" />
+                <ScalarProperty Name="businessId" ColumnName="businessId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="categories">
             <EntityTypeMapping TypeName="onLineModel.category">
               <MappingFragment StoreEntitySet="categories">
-                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
                 <ScalarProperty Name="categoryName" ColumnName="categoryName" />
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="customers">
             <EntityTypeMapping TypeName="onLineModel.customer">
               <MappingFragment StoreEntitySet="customers">
-                <ScalarProperty Name="custId" ColumnName="custId" />
-                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
-                <ScalarProperty Name="custName" ColumnName="custName" />
-                <ScalarProperty Name="latitude" ColumnName="latitude" />
-                <ScalarProperty Name="longitude" ColumnName="longitude" />
                 <ScalarProperty Name="firebaseToken" ColumnName="firebaseToken" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="custName" ColumnName="custName" />
+                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+                <ScalarProperty Name="custId" ColumnName="custId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="customersInLines">
             <EntityTypeMapping TypeName="onLineModel.customersInLine">
               <MappingFragment StoreEntitySet="customersInLine">
-                <ScalarProperty Name="TurnId" ColumnName="TurnId" />
-                <ScalarProperty Name="custId" ColumnName="custId" />
-                <ScalarProperty Name="activityTimeId" ColumnName="activityTimeId" />
-                <ScalarProperty Name="enterHour" ColumnName="enterHour" />
-                <ScalarProperty Name="estimatedHour" ColumnName="estimatedHour" />
-                <ScalarProperty Name="actualHour" ColumnName="actualHour" />
-                <ScalarProperty Name="exitHour" ColumnName="exitHour" />
-                <ScalarProperty Name="preAlert" ColumnName="preAlert" />
-                <ScalarProperty Name="statusTurn" ColumnName="statusTurn" />
-                <ScalarProperty Name="verificationCode" ColumnName="verificationCode" />
-                <ScalarProperty Name="numOfPushTimes" ColumnName="numOfPushTimes" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ranges">
-            <EntityTypeMapping TypeName="onLineModel.ranx">
-              <MappingFragment StoreEntitySet="ranges">
-                <ScalarProperty Name="turnId" ColumnName="turnId" />
-                <ScalarProperty Name="startTime" ColumnName="startTime" />
-                <ScalarProperty Name="endTime" ColumnName="endTime" />
+                <ScalarProperty Name="numOfPushTimes" ColumnName="numOfPushTimes" />
+                <ScalarProperty Name="verificationCode" ColumnName="verificationCode" />
+                <ScalarProperty Name="statusTurn" ColumnName="statusTurn" />
+                <ScalarProperty Name="preAlert" ColumnName="preAlert" />
+                <ScalarProperty Name="exitHour" ColumnName="exitHour" />
+                <ScalarProperty Name="actualHour" ColumnName="actualHour" />
+                <ScalarProperty Name="estimatedHour" ColumnName="estimatedHour" />
+                <ScalarProperty Name="enterHour" ColumnName="enterHour" />
+                <ScalarProperty Name="activityTimeId" ColumnName="activityTimeId" />
+                <ScalarProperty Name="custId" ColumnName="custId" />
+                <ScalarProperty Name="TurnId" ColumnName="TurnId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="services">
             <EntityTypeMapping TypeName="onLineModel.service">
               <MappingFragment StoreEntitySet="services">
-                <ScalarProperty Name="serviceId" ColumnName="serviceId" />
-                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
-                <ScalarProperty Name="serviceName" ColumnName="serviceName" />
-                <ScalarProperty Name="businessId" ColumnName="businessId" />
-                <ScalarProperty Name="kindOfPermission" ColumnName="kindOfPermission" />
                 <ScalarProperty Name="limitDays" ColumnName="limitDays" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="swaps">
-            <EntityTypeMapping TypeName="onLineModel.swap">
-              <MappingFragment StoreEntitySet="swaps">
-                <ScalarProperty Name="swapId" ColumnName="swapId" />
-                <ScalarProperty Name="turnId" ColumnName="turnId" />
-                <ScalarProperty Name="startTime" ColumnName="startTime" />
-                <ScalarProperty Name="endTime" ColumnName="endTime" />
+                <ScalarProperty Name="kindOfPermission" ColumnName="kindOfPermission" />
+                <ScalarProperty Name="businessId" ColumnName="businessId" />
+                <ScalarProperty Name="serviceName" ColumnName="serviceName" />
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
+                <ScalarProperty Name="serviceId" ColumnName="serviceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="unusuals">
             <EntityTypeMapping TypeName="onLineModel.unusual">
               <MappingFragment StoreEntitySet="unusuals">
-                <ScalarProperty Name="unusualId" ColumnName="unusualId" />
-                <ScalarProperty Name="average" ColumnName="average" />
-                <ScalarProperty Name="activityTimeId" ColumnName="activityTimeId" />
-                <ScalarProperty Name="startTime" ColumnName="startTime" />
-                <ScalarProperty Name="endTime" ColumnName="endTime" />
-                <ScalarProperty Name="standardDeviation" ColumnName="standardDeviation" />
-                <ScalarProperty Name="kindOfUnusual" ColumnName="kindOfUnusual" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="kindOfUnusual" ColumnName="kindOfUnusual" />
+                <ScalarProperty Name="standardDeviation" ColumnName="standardDeviation" />
+                <ScalarProperty Name="endTime" ColumnName="endTime" />
+                <ScalarProperty Name="startTime" ColumnName="startTime" />
+                <ScalarProperty Name="activityTimeId" ColumnName="activityTimeId" />
+                <ScalarProperty Name="average" ColumnName="average" />
+                <ScalarProperty Name="unusualId" ColumnName="unusualId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

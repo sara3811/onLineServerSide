@@ -23,6 +23,7 @@ namespace DAL
         public int businessId { get; set; }
         public string businessName { get; set; }
         public string password { get; set; }
+        public string managerPassword { get; set; }
         public string adress_city { get; set; }
         public string adress_street { get; set; }
         public int adress_numOfStreet { get; set; }

@@ -25,7 +25,7 @@ namespace BL
         /// <returns>num of pushed turns</returns>
         private static int pushTurns(List<customersInLine> line, TimeSpan time, ActivityTimeDTO activityTime)
         {
-            TimeSpan ts = TimeSpan.FromMinutes((double)activityTime.ActualDurationOfService);
+            TimeSpan ts = TimeSpan.FromMinutes((double)activityTime.AvgServiceDuration);
             int pushedTurnsCnt = 0;
 
             for (int i = 0; i < line.Count(); i++)
@@ -65,7 +65,7 @@ namespace BL
         {
             List<customersInLine> line = TurnDal.GetLinePerActivityTime(activityTime.ActivityTimeId);
             pushFlag = false;
-            double durationOfService = (double)activityTime.ActualDurationOfService;
+            double durationOfService = (double)activityTime.AvgServiceDuration;
             //מחשב את ההפרש בין זמן התחלת המשמרת לזמן שקבלנו בפרמטר ע"מ למצוא את הזמן שבו יתחיל לחפש תור 
             int totalPassedShifts = (int)((timeToLookFor.TotalMinutes - activityTime.StartTime.TotalMinutes) / durationOfService) + 1;
             //  פרמטר של פנוי שיהיה לפי ממוצע זמן ההמתנה

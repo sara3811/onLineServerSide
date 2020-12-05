@@ -17,8 +17,8 @@ namespace DTO
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int NumOfWorkers { get; set; }
-        public int EstimatedDurationOfService { get; set; }
-        public double? ActualDurationOfService { get; set; }
+       
+        public double? AvgServiceDuration { get; set; }
         public double? StandardDeviation { get; set; }
         public double? AverageNumOfWaitingPeople { get; set; }
 

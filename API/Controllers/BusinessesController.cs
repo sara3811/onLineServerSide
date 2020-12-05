@@ -38,7 +38,7 @@ namespace API.Controllers
                 return BadRequest();
             }
         }
-    
+
         public IHttpActionResult GetBusiness(string id)
         {
             try
@@ -50,5 +50,11 @@ namespace API.Controllers
                 return BadRequest();
             }
         }
+        //כמה עסקים במערכת
+        //כמה לקוחות
+        //כמה קטגוריות
+        //  
+       
+
     }
 }

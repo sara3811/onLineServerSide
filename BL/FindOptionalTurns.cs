@@ -25,7 +25,10 @@ namespace BL
             List<TurnInBusinessDTO> servicesToReturn = new List<TurnInBusinessDTO>();
             bool pushFlag = false;
             services = converters.TurnInBusinessConverters.GetTurnsInBusinessDTO(ServiceDal.GetServicesByCategory(categoryId));
-            services.ForEach(s => s.Duration = TurnServices.GooglePlaces(longitude, latitude, s.Address, isDriving));
+            if (latitude != "0" && longitude == "0")
+                services.ForEach(s => s.Duration = TurnServices.GooglePlaces(longitude, latitude, s.Address, isDriving));
+            else
+                services.ForEach(s => s.Duration = 0);
             if (services.Count() > 20)
                 services.OrderBy(s => s.Duration).Take(20);
             TimeSpan timeToLookFor;
@@ -52,13 +55,16 @@ namespace BL
             bool pushFlag = false;
             TurnInBusinessDTO service = new TurnInBusinessDTO();
             service = converters.TurnInBusinessConverters.GetTurnInBusinessDTO(ServiceDal.GetServicById(serviceId));
-            service.Duration = TurnServices.GooglePlaces(longitude, latitude, service.Address, isDriving);
+            if (latitude != "0" && longitude == "0")
+                service.Duration = TurnServices.GooglePlaces(longitude, latitude, service.Address, isDriving);
+            else
+                service.Duration = 0;
             service.EstimatedHour = ImmediateTurn.GetOptionalHourPerBusiness(serviceId, TimeSpan.FromMinutes(service.Duration).Add(DateTime.Now.TimeOfDay), ref pushFlag);
 
             try
             {
-                if(service.EstimatedHour!=new TimeSpan())
-                service.TurnId = ImmediateTurn.MakeTemporaryTurn(service, pushFlag, custId);
+                if (service.EstimatedHour != new TimeSpan())
+                    service.TurnId = ImmediateTurn.MakeTemporaryTurn(service, pushFlag, custId);
             }
             catch (Exception ex)
             {

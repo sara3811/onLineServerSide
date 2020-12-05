@@ -18,5 +18,21 @@ namespace DAL
             }
             //x => x.Quotes.Select(q => q.QuoteItems)
         }
+
+        public static int GetNumOfTurnsByBusiness(int businessId)
+        {
+            using (onLineEntities1 entities1 = new onLineEntities1())
+            {
+                return entities1.customersInLines.Include(a => a.activityTime).Include(a => a.activityTime.service).Where(c=>c.activityTime.service.businessId==businessId).Count();
+            }
+        }
+
+        public static int GetNumOfTurns()
+        {
+            using (onLineEntities1 entities1 = new onLineEntities1())
+            {
+                return entities1.customersInLines.Count();
+            }
+        }
     }
 }

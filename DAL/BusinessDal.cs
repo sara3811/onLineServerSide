@@ -66,5 +66,14 @@ namespace DAL
                 return id;
             }
         }
+
+        public static int GetNumOfBusinesses()
+        {
+            using (onLineEntities1 entities1 = new onLineEntities1())
+            {
+               return entities1.businesses.Count();
+            }
+        }
+
     }
 }

@@ -164,6 +164,7 @@
     <Compile Include="Cashier.cs" />
     <Compile Include="CategoryBL.cs" />
     <Compile Include="converters\ActivityTimeConverters.cs" />
+    <Compile Include="converters\BasicServiceConverters.cs" />
     <Compile Include="converters\BusinessConverters.cs" />
     <Compile Include="converters\TurnInBusinessConverters.cs" />
     <Compile Include="converters\CategoryConverters.cs" />
@@ -180,8 +181,10 @@
     <Compile Include="models\IAuthContainerModel.cs" />
     <Compile Include="models\JWTContainerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceBL.cs" />
     <Compile Include="services\NotificationTimer.cs" />
     <Compile Include="services\NotifactionService.cs" />
+    <Compile Include="services\onLineInformation.cs" />
     <Compile Include="services\StatisticCalc.cs" />
     <Compile Include="services\TurnServices.cs" />
     <Compile Include="Token.cs" />

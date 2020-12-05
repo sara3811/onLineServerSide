@@ -42,19 +42,44 @@ namespace BL
         {
             //todo: check if it is cprrect
             List<List<double>> avgForService = new List<List<double>>();
+          
             var services = DAL.BusinessDal.GetBusinessById(businessId).services;
+            if (services == null)
+                throw new Exception("there is no services!");
             int cnt = 0;
             foreach (var item in services)
             {
                 var activityTimes = ActivityTimeDal.GetActivityTimes(item.serviceId);
+                if (activityTimes == null)
+                    throw new Exception("there is no activityTimes!");
+               
+                List<double> days = new List<double>();
+                     
                 for (int i = 0; i < 7; i++)
                 {
-                    avgForService[cnt][i] = activityTimes.Where(a => a.dayInWeek == i + 1).Average(a => a.avgWaitings.Value);
+                    var dailyAC = activityTimes.Where(a => a.dayInWeek == i + 1);
+                    if (dailyAC != null && dailyAC.Count() > 0)
+                        days.Add(dailyAC.Average(a => a.avgWaitings.Value));
+                    else
+                        days.Add(0);
                 }
+                avgForService.Add(days);
                 cnt++;
             }
             return avgForService;
         }
+        //todo: finish with it
+        public static List<int> GetGeneralInformationForBusiness(int businessId)
+        {
+            List<int> information = new List<int>();
+            information.AddRange(services.onLineInformation.GetGeneralInformation());
+           // information.Add
+
+
+            return information;
+
+        }
+
 
     }
 }

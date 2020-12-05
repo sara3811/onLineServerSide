@@ -111,7 +111,7 @@ namespace BL.services
             double activityTimeAvg, newAvg, weightedAverage;
             if (IsServiceDuration)
             {
-                activityTimeAvg = activityTime.actualServiceDuration.Value;
+                activityTimeAvg = activityTime.avgServiceDuration.Value;
                 newAvg = line.Average(lenOfServiceSelector);
             }
             else
@@ -128,7 +128,7 @@ namespace BL.services
             activityTime.sampleSize = totalSampleSize;
             if (IsServiceDuration)
             {
-                activityTime.actualServiceDuration = weightedAverage;
+                activityTime.avgServiceDuration = weightedAverage;
                 //  activityTime.serviceStandardDeviation = weightedStandardDeviation;
             }
             else
@@ -136,7 +136,7 @@ namespace BL.services
                 activityTime.avgWaitings = weightedAverage;
              //   activityTime.waitingStandardDeviation = weightedStandardDeviation;
             }
-            ActivityTimeDal.updateActivityTime(activityTime);
+            ActivityTimeDal.UpdateActivityTime(activityTime);
         }
         /// <summary>
         /// add the unusual data to the table
@@ -210,7 +210,7 @@ namespace BL.services
         public static void calcAvgServiceDuration(int activityTimeId)
         {
             DAL.activityTime activityTime = ActivityTimeDal.GetActivityTimeById(activityTimeId);
-            double avg = activityTime.actualServiceDuration.Value;
+            double avg = activityTime.avgServiceDuration.Value;
             findUnusualSequences(activityTimeId, avg, true);
         }
 

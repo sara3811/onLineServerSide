@@ -13,17 +13,15 @@ namespace BL.converters
         {
             DAL.activityTime activityTime = new DAL.activityTime()
             {
-                activityTimeId = activityTimeDTO.ActivityTimeId ,
-                serviceId = activityTimeDTO.ServiceId ,
-                dayInWeek = activityTimeDTO.DayInWeek ,
-                startTime = activityTimeDTO.StartTime ,
-                endTime = activityTimeDTO.EndTime ,
-                numOfWorkers = activityTimeDTO.NumOfWorkers ,
-                estimatedServiceDuration = activityTimeDTO.EstimatedDurationOfService ,
-                actualServiceDuration = activityTimeDTO.ActualDurationOfService,
-             //todo:   StandardDeviation = activityTimeDTO.StandardDeviation ,
-                //todo: change dto type
-                avgServiceDuration =(int) activityTimeDTO.AverageNumOfWaitingPeople ,
+                activityTimeId = activityTimeDTO.ActivityTimeId,
+                serviceId = activityTimeDTO.ServiceId,
+                dayInWeek = activityTimeDTO.DayInWeek,
+                startTime = activityTimeDTO.StartTime,
+                endTime = activityTimeDTO.EndTime,
+                numOfWorkers = activityTimeDTO.NumOfWorkers,
+                serviceStandardDeviation = activityTimeDTO.StandardDeviation,
+                avgWaitings = activityTimeDTO.AverageNumOfWaitingPeople,
+                avgServiceDuration = activityTimeDTO.AvgServiceDuration
             };
             return activityTime;
         }
@@ -32,18 +30,17 @@ namespace BL.converters
         {
             DTO.ActivityTimeDTO activityTimeDTO = new DTO.ActivityTimeDTO()
             {
-                ActivityTimeId = activityTime.activityTimeId ,
-                ServiceId = activityTime.serviceId ,
-                DayInWeek = activityTime.dayInWeek ,
-                StartTime = activityTime.startTime ,
-                EndTime = activityTime.endTime ,
-                StartDate =  activityTime.startDate ,
-                EndDate = activityTime.endDate ,
-                NumOfWorkers =  activityTime.numOfWorkers ,
-                EstimatedDurationOfService = activityTime.estimatedServiceDuration ,
-                ActualDurationOfService = activityTime.actualServiceDuration ,
-              //todo:  StandardDeviation = activityTime.StandardDeviation ,
-                AverageNumOfWaitingPeople = activityTime.avgWaitings ,
+                ActivityTimeId = activityTime.activityTimeId,
+                ServiceId = activityTime.serviceId,
+                DayInWeek = activityTime.dayInWeek,
+                StartTime = activityTime.startTime,
+                EndTime = activityTime.endTime,
+                StartDate = activityTime.startDate,
+                EndDate = activityTime.endDate,
+                NumOfWorkers = activityTime.numOfWorkers,
+                AvgServiceDuration=activityTime.avgServiceDuration,
+                //todo:  StandardDeviation = activityTime.StandardDeviation ,
+                AverageNumOfWaitingPeople = activityTime.avgWaitings,
             };
             return activityTimeDTO;
         }

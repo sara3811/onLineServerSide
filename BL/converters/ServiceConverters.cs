@@ -15,8 +15,7 @@ namespace BL.converters
            service service = new service()
             {
                 serviceId = serviceDTO.ServiceId ,
-                serviceName = serviceDTO.ServiceName ,
-                businessId = serviceDTO.BusinessId ,
+                serviceName = serviceDTO.ServiceName ,               
                 categoryId = serviceDTO.CategoryId ,
                 kindOfPermission=serviceDTO.KindOfPermission,
             };
@@ -27,9 +26,11 @@ namespace BL.converters
         {
             ServiceDTO serviceDTO = new ServiceDTO()
             {
-                ServiceId = service.serviceId ,
-                ServiceName = service.serviceName ,
-                BusinessId = service.businessId ,
+                ServiceId = service.serviceId,
+                ServiceName = service.serviceName,
+                AvgNumOfWorkers =(int) service.activityTimes.Average(a => a.numOfWorkers),
+                AvgServiceDuration = ServiceBL.GetAvgDurationByService(service.activityTimes.ToList()),
+                AvgSameServices= ServiceBL.GetAvgForAllServicesPerCategory(service.categoryId),
                 CategoryId = service.categoryId ,
                 KindOfPermission=service.kindOfPermission,
             };

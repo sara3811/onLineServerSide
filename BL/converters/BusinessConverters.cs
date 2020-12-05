@@ -34,7 +34,7 @@ namespace BL.converters
                 Password = business.password ,
                 Address = business.adress_street + " " + business.adress_numOfStreet + " " + business.adress_city ,
                 // ChainManagerId = (int) business.managerid ,
-               Services = ServiceConverters.GetServicesDTO(business.services.ToList())
+               Services = BasicServiceConverters.GetBasicServicesDTO(business.services.ToList())
             };
             return businessDTO;
         }

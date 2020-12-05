@@ -29,12 +29,10 @@ namespace DAL
         public Nullable<System.DateTime> startDate { get; set; }
         public Nullable<System.DateTime> endDate { get; set; }
         public int numOfWorkers { get; set; }
-        public int estimatedServiceDuration { get; set; }
-        public Nullable<double> actualServiceDuration { get; set; }
         public Nullable<double> serviceStandardDeviation { get; set; }
         public Nullable<double> waitingStandardDeviation { get; set; }
         public Nullable<double> avgWaitings { get; set; }
-        public Nullable<int> avgServiceDuration { get; set; }
+        public Nullable<double> avgServiceDuration { get; set; }
         public Nullable<int> sampleSize { get; set; }
     
         public virtual service service { get; set; }
