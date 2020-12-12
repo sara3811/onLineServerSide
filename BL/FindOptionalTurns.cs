@@ -25,7 +25,7 @@ namespace BL
             List<TurnInBusinessDTO> servicesToReturn = new List<TurnInBusinessDTO>();
             bool pushFlag = false;
             services = converters.TurnInBusinessConverters.GetTurnsInBusinessDTO(ServiceDal.GetServicesByCategory(categoryId));
-            if (latitude != "0" && longitude == "0")
+            if (latitude != "0" && longitude != "0")
                 services.ForEach(s => s.Duration = TurnServices.GooglePlaces(longitude, latitude, s.Address, isDriving));
             else
                 services.ForEach(s => s.Duration = 0);
@@ -39,7 +39,7 @@ namespace BL
             servicesToReturn.AddRange(services.Take(2));
             services.RemoveAll(s => servicesToReturn.Contains(s));
             servicesToReturn.AddRange(services.Where(s => s.Duration == services.Min(d => d.Duration)));
-
+          //  servicesToReturn.Add(services.FirstOrDefault(s => s.Duration == services.Min(d => d.Duration)));
             if (servicesToReturn.Count == 0)
                 return servicesToReturn;
             servicesToReturn.ForEach(s => s.TurnId = ImmediateTurn.MakeTemporaryTurn(s, pushFlag, custId));
@@ -55,7 +55,7 @@ namespace BL
             bool pushFlag = false;
             TurnInBusinessDTO service = new TurnInBusinessDTO();
             service = converters.TurnInBusinessConverters.GetTurnInBusinessDTO(ServiceDal.GetServicById(serviceId));
-            if (latitude != "0" && longitude == "0")
+            if (latitude != "0" && longitude != "0")
                 service.Duration = TurnServices.GooglePlaces(longitude, latitude, service.Address, isDriving);
             else
                 service.Duration = 0;

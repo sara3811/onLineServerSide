@@ -19,6 +19,8 @@ namespace BL.converters
                 VeriverificationCode = turn.verificationCode,
                 ServiceId=turn.activityTime.serviceId,
                 ActualHour=turn.actualHour.Value
+                 //ActualHour=new TimeSpan()
+
             };
             return turnDetails;
 

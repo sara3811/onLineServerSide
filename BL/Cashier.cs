@@ -28,6 +28,8 @@ namespace BL
                 
                 else
                     throw new Exception("there is no activityTime now");
+                if (line[0].actualHour == null)
+                    line[0].actualHour = new TimeSpan();
                 return converters.TurnDetailsConverters.GetTurnDetailsDTO(line[0]);
             }
             catch (Exception ex)

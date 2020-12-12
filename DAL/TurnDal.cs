@@ -46,7 +46,7 @@ namespace DAL
             {
                 using (onLineEntities1 entities = new onLineEntities1())
                 {
-                    return entities.customersInLines.Where(a => a.isActive == true && a.custId == custId && a.actualHour == new TimeSpan()).ToList();
+                    return entities.customersInLines.Where(a => a.isActive == true && a.custId == custId && a.actualHour == null).ToList();
                 }
             }
             catch (Exception)

@@ -40,9 +40,9 @@ namespace API.Controllers
             {
                 return Ok(ImmediateTurn.ConfirmImmediateTurn(turn));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.ToString());
             }
         }
 

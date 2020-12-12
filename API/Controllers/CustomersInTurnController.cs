@@ -66,10 +66,10 @@ namespace API.Controllers
                 Cashier.CompleteTurn(turn);
                 return Ok(Cashier.GetNearestTurn(turn.ServiceId));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 

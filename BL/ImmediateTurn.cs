@@ -151,6 +151,11 @@ namespace BL
             TurnDal.UpdateTurn(newTurn);
             if (line.Count() > 0)
                 line.ForEach(a => TurnDal.DeleteTurn(a.TurnId));
+            //טיפול במקרי קצה של תורים באותה שעה
+            var allTurnsToCus = BL.CustInLineBL.GetTurnsToCustomer(newTurn.custId);
+            allTurnsToCus.Where(t => t.estimatedHour == newTurn.estimatedHour && t.TurnId != newTurn.TurnId);
+            if (allTurnsToCus != null)
+                throw new Exception("יש לך כבר תור בשעה זו");
             return verificationCode;
         }
 
