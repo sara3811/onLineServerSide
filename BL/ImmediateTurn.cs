@@ -153,7 +153,7 @@ namespace BL
                 line.ForEach(a => TurnDal.DeleteTurn(a.TurnId));
             //טיפול במקרי קצה של תורים באותה שעה
             var allTurnsToCus = BL.CustInLineBL.GetTurnsToCustomer(newTurn.custId);
-            allTurnsToCus.Where(t => t.estimatedHour == newTurn.estimatedHour && t.TurnId != newTurn.TurnId);
+            allTurnsToCus.Where(t => t.FullTime == newTurn.estimatedHour && t.TurnId != newTurn.TurnId);
             if (allTurnsToCus != null)
                 throw new Exception("יש לך כבר תור בשעה זו");
             return verificationCode;

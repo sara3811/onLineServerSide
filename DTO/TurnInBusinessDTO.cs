@@ -13,6 +13,7 @@ namespace DTO
         public string Address { get; set; }
         
         public TimeSpan? EstimatedHour { get; set; }
+        public DateTime? FullTime { get; set; }
         public int TurnId { get; set; }
         public int Duration { get; set; }
 

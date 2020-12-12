@@ -41,6 +41,7 @@ namespace BL.converters
                 Address = custTurn.activityTime.service.business.adress_street + " " + custTurn.activityTime.service.business.adress_numOfStreet + " " + custTurn.activityTime.service.business.adress_city,
                 TurnId= custTurn.TurnId,
                 EstimatedHour= custTurn.estimatedHour.TimeOfDay,
+                FullTime=custTurn.estimatedHour,
 
             };
             return turn;
