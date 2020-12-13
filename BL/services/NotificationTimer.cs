@@ -28,7 +28,12 @@ namespace BL.services
             foreach (var item in allTurns)
             {
                 //check if there is correct token and if the time to alert is now)
-                if (item.customer.firebaseToken.Length != 1 && item.estimatedHour.AddMinutes(-item.preAlert) == DateTime.Now)
+                DateTime itemHour = item.estimatedHour.AddMinutes(-item.preAlert), now = DateTime.Now;
+
+                if (item.customer.firebaseToken.Length != 1 &&
+                    itemHour.Date == now.Date &&
+                    itemHour.Hour == now.Hour && 
+                    itemHour.Minute == now.Minute)
                     //מפעיל את שליחת ההתרעה
                     await NotificationService.SendNotification("שים לב התראה  OnLine", "התור שלך הוא בעוד" + item.preAlert + "דקות", item.customer.firebaseToken);
 
