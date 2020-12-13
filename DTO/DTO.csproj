@@ -47,6 +47,7 @@
     <Compile Include="ActivityTimeDTO.cs" />
     <Compile Include="BasicServiceDTO.cs" />
     <Compile Include="BusinessDTO.cs" />
+    <Compile Include="confirmResponse.cs" />
     <Compile Include="TurnInBusinessDTO.cs" />
     <Compile Include="CategoryDTO.cs" />
     <Compile Include="CustomerDTO.cs" />

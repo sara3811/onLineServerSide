@@ -134,7 +134,7 @@ namespace BL
         /// <param name="turn"></param>
         /// <returns></returns>
 
-        public static string ConfirmImmediateTurn(TurnDetailsDTO turn)
+        public static confirmResponse ConfirmImmediateTurn(TurnDetailsDTO turn)
         {
             List<customersInLine> line = new List<customersInLine>();
 
@@ -154,9 +154,16 @@ namespace BL
             //טיפול במקרי קצה של תורים באותה שעה
             var allTurnsToCus = BL.CustInLineBL.GetTurnsToCustomer(newTurn.custId);
             allTurnsToCus=allTurnsToCus.Where(t => t.FullTime == newTurn.estimatedHour && t.TurnId != newTurn.TurnId).ToList();
-            if (allTurnsToCus.Count != 0)
-                throw new Exception("יש לך כבר תור בשעה זו");
-            return verificationCode;
+
+            confirmResponse confirmResponse = new DTO.confirmResponse()
+            {
+                turnId = turn.TurnId,
+                verificationCode = verificationCode,
+                isConflict = allTurnsToCus.Count != 0 ? true : false
+            };
+            
+          
+            return confirmResponse;
         }
 
 
