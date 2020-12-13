@@ -53,7 +53,12 @@ namespace BL
             DateTime date = DateTime.Now;
             List<activityTime> activityTimes = ActivityTimeDal.GetActivityTimes(serviceId);
             List<DateTime> optionalDays = new List<DateTime>();
-            int limitDays = ServiceDal.GetServicById(serviceId).limitDays.Value;
+            var service = ServiceDal.GetServiceById(serviceId);
+            int limitDays;
+            if (service.kindOfPermission == true)
+                 limitDays = service.limitDays.Value;
+            else
+                throw new Exception("בעסק זה לא ניתן לקבוע תורים מראש");
             for (int i = 0; i < limitDays; i++, day++)
             {
                 if (day == 7)

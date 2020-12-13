@@ -54,7 +54,7 @@ namespace BL
         {
             bool pushFlag = false;
             TurnInBusinessDTO service = new TurnInBusinessDTO();
-            service = converters.TurnInBusinessConverters.GetTurnInBusinessDTO(ServiceDal.GetServicById(serviceId));
+            service = converters.TurnInBusinessConverters.GetTurnInBusinessDTO(ServiceDal.GetServiceById(serviceId));
             if (latitude != "0" && longitude != "0")
                 service.Duration = TurnServices.GooglePlaces(longitude, latitude, service.Address, isDriving);
             else

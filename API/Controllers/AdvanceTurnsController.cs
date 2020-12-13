@@ -25,9 +25,9 @@ namespace API.Controllers
                     return Ok(MakeAppointment.GetOptionalHoursPerDay(int.Parse(serviceId), (DateTime.Parse(day))));
 
             }
-            catch
+            catch(Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

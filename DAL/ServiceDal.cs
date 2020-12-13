@@ -40,7 +40,7 @@ namespace DAL
             }
         }
 
-        public static service GetServicById(int serviceId)
+        public static service GetServiceById(int serviceId)
         {
             try
             {
